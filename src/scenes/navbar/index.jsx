@@ -19,13 +19,14 @@ import {
   Help,
   Menu,
   Close,
+  Event, Group, SportsSoccer
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
-const Navbar = () => {
+const Navbar = ({ handleGroupIconClick,handleEventIconClick, handleActivityIconClick }) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const Navbar = () => {
   const alt = theme.palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;
+
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -76,6 +78,20 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
+        <div>
+            <IconButton onClick={handleActivityIconClick}>
+              <SportsSoccer />
+            </IconButton>
+
+            <IconButton onClick={handleEventIconClick} >
+              <Event />
+            </IconButton>
+
+        <IconButton onClick={handleGroupIconClick}>
+          <Group />
+          </IconButton>
+        
+          </div>
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
               <DarkMode sx={{ fontSize: "25px" }} />
