@@ -58,7 +58,7 @@ const Navbar = ({ handleGroupIconClick,handleEventIconClick, handleActivityIconC
             },
           }}
         >
-          Sociopedia
+          UniSocialize
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween
