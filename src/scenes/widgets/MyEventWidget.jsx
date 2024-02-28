@@ -19,13 +19,12 @@ import {
   } from "@mui/material";
   import FlexBetween from "components/FlexBetween";
   import Dropzone from "react-dropzone";
-  import UserImage from "components/UserImage";
   import WidgetWrapper from "components/WidgetWrapper";
   import { useState } from "react";
   import { useDispatch, useSelector } from "react-redux";
   import { setPosts } from "state";
   
-  const MyPostWidget = ({ picturePath }) => {
+  const MyPostWidget = () => {
     const dispatch = useDispatch();
     const [isImage, setIsImage] = useState(false);
     const [image, setImage] = useState(null);
@@ -59,9 +58,18 @@ import {
   
     return (
       <WidgetWrapper>
-        <div>Eventttt widget</div>
+        <Box display="flex" alignItems="center">
+      <Box marginLeft={2}>
+        <Typography variant="h5" gutterBottom>
+          Liste des evenements
+        </Typography>
+        <Typography variant="subtitle1">
+          evenement 1 :
+          evenement 2 :
+        </Typography>
+      </Box>
+    </Box>
         <FlexBetween gap="1.5rem">
-          <UserImage image={picturePath} />
           <InputBase
             placeholder="What's on your mind..."
             onChange={(e) => setPost(e.target.value)}
