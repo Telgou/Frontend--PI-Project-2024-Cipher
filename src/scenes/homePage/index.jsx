@@ -4,16 +4,17 @@ import { useState, useEffect } from "react";
 import Navbar from "scenes/navbar";
 import UserWidget from "scenes/widgets/UserWidget";
 import MyPostWidget from "scenes/widgets/MyPostWidget";
+import MyGroupWidget from "scenes/widgets/MyGroupWidget";
 import MyActivityWidget from "scenes/widgets/MyActivityWidget";
 import MyEventWidget from "scenes/widgets/MyEventWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import ActivitysWidget from "scenes/widgets/ActivitysWidget";
 import EventsWidget from "scenes/widgets/EventsWidget";
-import AdvertWidget from "scenes/widgets/AdvertWidget";
+//import AdvertWidget from "scenes/widgets/AdvertWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
 
 const HomePage = () => {
-  const [showGroupWidget, setShowGroupWidget] = useState(true);
+  const [showGroupWidget, setShowGroupWidget] = useState(false);
   const [showEventWidget, setShowEventsWidget] = useState(false);
   const [showSportsWidget, setShowSportsWidget] = useState(false); // New state
   const handleGroupIconClick = () => {
@@ -64,17 +65,20 @@ const HomePage = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          {showGroupWidget && <MyPostWidget picturePath={picturePath} />}
+          {showGroupWidget && <MyGroupWidget picturePath={picturePath} />}
+
+          { !showEventWidget && !showGroupWidget && !showEventWidget && <MyPostWidget/>}
           {showSportsWidget && <MyActivityWidget />}
           {showEventWidget && <MyEventWidget />}
           {/* <MyPostWidget picturePath={picturePath} /> */}
-          {showGroupWidget && <PostsWidget userId={_id} />}
+          { <PostsWidget userId={_id} />}
           {showSportsWidget && <ActivitysWidget userId={_id} />}
           {showEventWidget && <EventsWidget userId={_id} />}
+          
+          
         </Box>
         {isNonMobileScreens && (
           <Box flexBasis="26%">
-            <AdvertWidget />
             <Box m="2rem 0" />
             <FriendListWidget userId={_id} />
           </Box>
