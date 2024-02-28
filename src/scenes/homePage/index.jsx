@@ -14,7 +14,7 @@ import EventsWidget from "scenes/widgets/EventsWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
 
 const HomePage = () => {
-  const [showGroupWidget, setShowGroupWidget] = useState(true);
+  const [showGroupWidget, setShowGroupWidget] = useState(false);
   const [showEventWidget, setShowEventsWidget] = useState(false);
   const [showSportsWidget, setShowSportsWidget] = useState(false); // New state
   const handleGroupIconClick = () => {
@@ -67,11 +67,11 @@ const HomePage = () => {
         >
           {showGroupWidget && <MyGroupWidget picturePath={picturePath} />}
 
-          {showGroupWidget && <MyPostWidget/>}
+          { !showEventWidget && !showGroupWidget && !showEventWidget && <MyPostWidget/>}
           {showSportsWidget && <MyActivityWidget />}
           {showEventWidget && <MyEventWidget />}
           {/* <MyPostWidget picturePath={picturePath} /> */}
-          {showGroupWidget && <PostsWidget userId={_id} />}
+          { <PostsWidget userId={_id} />}
           {showSportsWidget && <ActivitysWidget userId={_id} />}
           {showEventWidget && <EventsWidget userId={_id} />}
           

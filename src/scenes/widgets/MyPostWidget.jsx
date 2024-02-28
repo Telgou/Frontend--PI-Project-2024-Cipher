@@ -20,6 +20,7 @@ import {
 import FlexBetween from "components/FlexBetween";
 import Dropzone from "react-dropzone";
 import WidgetWrapper from "components/WidgetWrapper";
+import UserImage from "components/UserImage";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
@@ -32,6 +33,7 @@ const MyPostWidget = () => {
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
+  const userimagepath = useSelector((state) => state.userImagePath);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
@@ -59,6 +61,7 @@ const MyPostWidget = () => {
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">
+        <UserImage image={userimagepath} />
         <InputBase
           placeholder="What's on your mind..."
           onChange={(e) => setPost(e.target.value)}

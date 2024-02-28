@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -11,8 +12,8 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setLogin } from "state";
+import { useDispatch, useSelector } from "react-redux";
+import { setLogin, setUserImagePath } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 
@@ -47,6 +48,7 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
+  const {tok} = useParams();
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
   const dispatch = useDispatch();
@@ -62,6 +64,7 @@ const Form = () => {
       formData.append(value, values[value]);
     }
     formData.append("picturePath", values.picture.name);
+    formData.append("tok", tok.split('=')[1]);
 
     const savedUserResponse = await fetch(
       "http://127.0.0.1:3001/auth/register",
@@ -71,7 +74,7 @@ const Form = () => {
       }
     );
     const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
+    //onSubmitProps.resetForm();
 
     if (savedUser) {
       setPageType("login");
@@ -86,7 +89,12 @@ const Form = () => {
     });
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
+    console.log(loggedIn);
     if (loggedIn) {
+      dispatch(
+        setUserImagePath(loggedIn.user.picturePath)
+      );
+
       dispatch(
         setLogin({
           user: loggedIn.user,

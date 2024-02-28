@@ -5,6 +5,7 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
+  userImagePath: "",
 };
 
 export const authSlice = createSlice({
@@ -39,9 +40,12 @@ export const authSlice = createSlice({
       });
       state.posts = updatedPosts;
     },
+    setUserImagePath: (state, action) => {
+      state.userImagePath = action.payload;
+    },
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
+export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost, setUserImagePath } =
   authSlice.actions;
 export default authSlice.reducer;
