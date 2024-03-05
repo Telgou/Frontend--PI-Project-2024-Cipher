@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -8,11 +7,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLogin, setUserImagePath } from "state";
 
 const preregisterSchema = yup.object().shape({
@@ -34,7 +32,6 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
-  const { tok } = useParams();
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
   const dispatch = useDispatch();

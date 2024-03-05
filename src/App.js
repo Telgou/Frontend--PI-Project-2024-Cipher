@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
+import { NotificationContainer } from "react-notifications";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -16,6 +17,7 @@ function App() {
 
   return (
     <div className="app">
+      <NotificationContainer />
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
