@@ -1,5 +1,4 @@
 import { NotificationManager } from 'react-notifications';
-//import 'react-notifications-component/dist/theme.css';
 import 'react-notifications/lib/notifications.css';
 
 export const showNotification = (type, message) => {

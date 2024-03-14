@@ -12,6 +12,7 @@ import ActivitysWidget from "scenes/widgets/ActivitysWidget";
 import EventsWidget from "scenes/widgets/EventsWidget";
 //import AdvertWidget from "scenes/widgets/AdvertWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
+import GroupsPostsWidget from "../widgets/GroupsPostsWidget";
 
 const HomePage = () => {
   const [showGroupWidget, setShowGroupWidget] = useState(false);
@@ -68,10 +69,12 @@ const HomePage = () => {
           {showGroupWidget && <MyGroupWidget picturePath={picturePath} />}
 
           { !showEventWidget && !showGroupWidget && !showEventWidget && <MyPostWidget/>}
+
           {showSportsWidget && <MyActivityWidget />}
           {showEventWidget && <MyEventWidget />}
           {/* <MyPostWidget picturePath={picturePath} /> */}
-          { <PostsWidget userId={_id} />}
+          { showGroupWidget && <GroupsPostsWidget/>}
+          {  !showEventWidget && !showGroupWidget && !showEventWidget && <PostsWidget userId={_id} />}
           {showSportsWidget && <ActivitysWidget userId={_id} />}
           {showEventWidget && <EventsWidget userId={_id} />}
           

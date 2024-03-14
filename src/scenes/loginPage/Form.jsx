@@ -16,11 +16,12 @@ import { useDispatch } from "react-redux";
 import { setLogin, setUserImagePath } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import {showNotification} from "../../components/react-notifications";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
+  //email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
   location: yup.string().required("required"),
   occupation: yup.string().required("required"),
@@ -75,8 +76,19 @@ const Form = () => {
     );
     const savedUser = await savedUserResponse.json();
     //onSubmitProps.resetForm();
+    //console.log(savedUser.error)
+    console.log(savedUserResponse.status)
+    if (savedUserResponse.status===403) {
+      showNotification('info',savedUser.error)
+    }
+    if (savedUser.error== 'E11000 duplicate key error collection: snu.users index: email_1 dup key: { : \"ahmed.gamgami@esprit.tn\" }'){
+    console.log("duplicate email")
+    showNotification('warning','There is already an account with the associated email')
 
-    if (savedUser) {
+    }
+    if (savedUserResponse.status==201) {
+      console.log(savedUserResponse.status,"201")
+      showNotification('success','You have registered successfully')
       setPageType("login");
     }
   };
@@ -217,16 +229,16 @@ const Form = () => {
               </>
             )}
 
-            <TextField
-              label="Email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.email}
-              name="email"
-              error={Boolean(touched.email) && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
-              sx={{ gridColumn: "span 4" }}
-            />
+            {isLogin && <TextField
+                label="Email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.email}
+                name="email"
+                error={Boolean(touched.email) && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
+                sx={{gridColumn: "span 4"}}
+            /> }
             <TextField
               label="Password"
               type="password"

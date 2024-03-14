@@ -23,9 +23,9 @@ import WidgetWrapper from "components/WidgetWrapper";
 import UserImage from "components/UserImage";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "state";
+import { setPosts, setMyPosts } from "state";
 
-const MyPostWidget = () => {
+const MyPostWidget = (isprofile) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
@@ -47,13 +47,21 @@ const MyPostWidget = () => {
       formData.append("picturePath", image.name);
     }
 
-    const response = await fetch(`http://127.0.0.1:3001/posts`, {
+    /*const response =*/ await fetch(`http://127.0.0.1:3001/addpost`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
-    const posts = await response.json();
-    dispatch(setPosts({ posts }));
+
+    const userid = new FormData();
+    userid.append("userId", _id);
+    const resposts = await fetch(
+      isprofile ? `http://127.0.0.1:3001/posts/${_id}` : 'http://127.0.0.1:3001/posts', {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const posts = await resposts.json();
+    (isprofile && _id===userid) ? dispatch(setMyPosts(posts)) : dispatch(setPosts({ posts }));
     setImage(null);
     setPost("");
   };
