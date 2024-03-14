@@ -26,7 +26,7 @@ import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
-const Navbar = ({ handleGroupIconClick,handleEventIconClick, handleActivityIconClick }) => {
+const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIconClick }) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ const Navbar = ({ handleGroupIconClick,handleEventIconClick, handleActivityIconC
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
-        <div>
+          <div>
             <IconButton onClick={handleActivityIconClick}>
               <SportsSoccer />
             </IconButton>
@@ -87,10 +87,10 @@ const Navbar = ({ handleGroupIconClick,handleEventIconClick, handleActivityIconC
               <Event />
             </IconButton>
 
-        <IconButton onClick={handleGroupIconClick}>
-          <Group />
-          </IconButton>
-        
+            <IconButton onClick={handleGroupIconClick}>
+              <Group />
+            </IconButton>
+
           </div>
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
