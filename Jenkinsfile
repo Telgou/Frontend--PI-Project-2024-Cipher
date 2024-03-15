@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        GIT_REPO = 'git@github.com:Telgou/Backend--PI-Project-2024-Cipher.git'
-        GIT_CREDENTIALS_ID = 'cipher-backend'
+        GIT_REPO = 'git@github.com:Telgou/Frontend--PI-Project-2024-Cipher.git'
+        GIT_CREDENTIALS_ID = 'cipher-frontend'
     }
     stages {
         stage('Clone') {
