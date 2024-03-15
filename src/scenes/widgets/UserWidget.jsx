@@ -119,7 +119,7 @@ const UserWidget = ({ userId, picturePath,getUserPosts }) => {
       console.error(error);
     }
   };
-
+// eslint-disable-next-line
   const EditSchema = yup.object().shape({
     firstName: yup.string().required("required"),
     lastName: yup.string().required("required"),
@@ -128,7 +128,6 @@ const UserWidget = ({ userId, picturePath,getUserPosts }) => {
     occupation: yup.string().required("required"),
     picture: yup.string().required("required"),
   });
-// eslint-disable-next-line
 
   return (
     <WidgetWrapper>
