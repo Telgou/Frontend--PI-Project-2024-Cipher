@@ -128,7 +128,7 @@ const UserWidget = ({ userId, picturePath,getUserPosts }) => {
     occupation: yup.string().required("required"),
     picture: yup.string().required("required"),
   });
-
+// eslint-disable-next-line
 
   return (
     <WidgetWrapper>

@@ -82,10 +82,10 @@ const Form = () => {
       showNotification('info',savedUser.error)
     }
     if (savedUser.error== 'E11000 duplicate key error collection: snu.users index: email_1 dup key: { : \"ahmed.gamgami@esprit.tn\" }'){
-    console.log("duplicate email")
+    console.log("duplicate email") // eslint-disable-next-line
     showNotification('warning','There is already an account with the associated email')
 
-    }
+    }// eslint-disable-next-line
     if (savedUserResponse.status==201) {
       console.log(savedUserResponse.status,"201")
       showNotification('success','You have registered successfully')
