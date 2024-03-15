@@ -10,7 +10,7 @@ import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useDispatch } from "react-redux";
-import { setLogin, setUserImagePath } from "state";
+import { setUserImagePath } from "state";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

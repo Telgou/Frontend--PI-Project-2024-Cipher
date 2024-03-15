@@ -94,7 +94,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             description={description}
             location={location}
             picturePath={picturePath}
-            userPicturePath={ (userId==ouruserid) ? userimagepath : userPicturePath}
+            userPicturePath={ (userId===ouruserid) ? userimagepath : userPicturePath}
             likes={likes}
             comments={comments}
           />
