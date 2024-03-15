@@ -11,7 +11,7 @@ pipeline {
             }
         }
         
-        stage('Installation des dépendances') {
+        stage('Dependancies installation') {
             steps {
                 script {
                         sh 'npm install'
@@ -19,13 +19,22 @@ pipeline {
             }
         }
         
-        stage('Construction du projet') {
+        stage('Build') {
             steps {
                 script {
                         sh 'npm run build'
                 }
             }
         }
+        stage('Build Image on Docker') {
+            steps {
+                // Build Docker image
+                script {
+                    sh ' docker build -t dormproject .'
+                    }
+                }
+        }
+
     }
     
     post {
