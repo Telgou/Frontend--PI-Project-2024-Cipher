@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { setLogin, setUserImagePath } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
-import {showNotification} from "../../components/react-notifications";
+import { showNotification } from "../../components/react-notifications";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -49,7 +49,7 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
-  const {tok} = useParams();
+  const { tok } = useParams();
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
   const dispatch = useDispatch();
@@ -78,17 +78,17 @@ const Form = () => {
     //onSubmitProps.resetForm();
     //console.log(savedUser.error)
     console.log(savedUserResponse.status)
-    if (savedUserResponse.status===403) {
-      showNotification('info',savedUser.error)
+    if (savedUserResponse.status === 403) {
+      showNotification('info', savedUser.error)
     }// eslint-disable-next-line
-    if (savedUser.error== 'E11000 duplicate key error collection: snu.users index: email_1 dup key: { : \"ahmed.gamgami@esprit.tn\" }'){
-    console.log("duplicate email") // eslint-disable-next-line
-    showNotification('warning','There is already an account with the associated email')
+    if (savedUser.error == 'E11000 duplicate key error collection: snu.users index: email_1 dup key: { : \"ahmed.gamgami@esprit.tn\" }') {
+      console.log("duplicate email") // eslint-disable-next-line
+      showNotification('warning', 'There is already an account with the associated email')
 
     }// eslint-disable-next-line
-    if (savedUserResponse.status==201) {
-      console.log(savedUserResponse.status,"201")
-      showNotification('success','You have registered successfully')
+    if (savedUserResponse.status == 201) {
+      console.log(savedUserResponse.status, "201")
+      showNotification('success', 'You have registered successfully')
       setPageType("login");
     }
   };
@@ -230,15 +230,15 @@ const Form = () => {
             )}
 
             {isLogin && <TextField
-                label="Email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={Boolean(touched.email) && Boolean(errors.email)}
-                helperText={touched.email && errors.email}
-                sx={{gridColumn: "span 4"}}
-            /> }
+              label="Email"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.email}
+              name="email"
+              error={Boolean(touched.email) && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
+              sx={{ gridColumn: "span 4" }}
+            />}
             <TextField
               label="Password"
               type="password"

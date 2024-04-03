@@ -12,6 +12,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin, setUserImagePath } from "state";
+import { showNotification } from "../../components/react-notifications";
 
 const preregisterSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
@@ -20,6 +21,10 @@ const preregisterSchema = yup.object().shape({
 const loginSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
+});
+
+const forgotSchema = yup.object().shape({
+  email: yup.string().email("invalid email").required("required"),
 });
 
 const initialValuesPreRegister = {
@@ -39,6 +44,7 @@ const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
   const ispreRegister = pageType === "preregister";
+  const isforgotpassword = pageType === "forgot";
 
   const pregister = async (values, onSubmitProps) => {
     const formData = new FormData();
@@ -50,7 +56,7 @@ const Form = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-        },      
+        },
         body: JSON.stringify({ email: values.email }),
       }
     );
@@ -61,7 +67,6 @@ const Form = () => {
       setPageType("login");
     }
   };
-
 
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch("http://127.0.0.1:3001/auth/login", {
@@ -87,17 +92,35 @@ const Form = () => {
     }
   };
 
+  const forgotpassword = async (values, onSubmitProps) => {
+    const ForgotResponse = await fetch("http://127.0.0.1:3001/auth/forgotpass", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    const forgot = await ForgotResponse.json();
+    onSubmitProps.resetForm();
+    console.log(forgot);
+    // eslint-disable-next-line
+    if (ForgotResponse.status == 200) {
+      showNotification('success', 'Please check your email to continue resetting your password')
+      setPageType("login");
+    }
+  }
+
+
   const handleFormSubmit = async (values, onSubmitProps) => {
-    console.log(values); // Log form values
+    console.log(values);
     if (isLogin) await login(values, onSubmitProps);
     if (ispreRegister) await pregister(values, onSubmitProps);
+    if (isforgotpassword) await forgotpassword(values, onSubmitProps);
   };
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={isLogin ? initialValuesLogin : initialValuesPreRegister}
-      validationSchema={isLogin ? loginSchema : preregisterSchema}
+      validationSchema={isLogin ? loginSchema : isforgotpassword ? forgotSchema : preregisterSchema}
     >
       {({
         values,
@@ -158,7 +181,7 @@ const Form = () => {
                 "&:hover": { color: palette.primary.main },
               }}
             >
-              {isLogin ? "LOGIN" : "PREREGISTER"}
+              {isLogin ? "LOGIN" : isforgotpassword ? "RESET" : "PREREGISTER"}
             </Button>
             <Typography
               onClick={() => {
@@ -177,6 +200,22 @@ const Form = () => {
               {isLogin
                 ? "Don't have an account? Sign Up here."
                 : "Already have an account? Login here."}
+            </Typography>
+            <Typography
+              onClick={() => {
+                setPageType(!isforgotpassword ? "forgot" : "login");
+                resetForm();
+              }}
+              sx={{
+                textDecoration: "underline",
+                color: palette.primary.main,
+                "&:hover": {
+                  cursor: "pointer",
+                  color: palette.primary.light,
+                },
+              }}
+            >
+              {isLogin ? "forgot password?" : ""}
             </Typography>
           </Box>
         </form>

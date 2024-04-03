@@ -1,9 +1,13 @@
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import Form from "./Form";
+import PassresetForm from "./Form forgotpassword";
+import { useParams } from "react-router-dom";
 
 const LoginPage = () => {
   const theme = useTheme();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const { tok } = useParams();
+  //console.log(tok.startsWith("tok=pass"))
   return (
     <Box>
       <Box
@@ -25,9 +29,9 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to UniSocialize, the Social Media for University professors !
+          {tok.startsWith("tok=pass") ? "Please enter your new password" : "Welcome to UniSocialize, the Social Media for University professors !"}
         </Typography>
-        <Form />
+        {tok.startsWith("tok=pass") ? <PassresetForm /> : <Form />}
       </Box>
     </Box>
   );
