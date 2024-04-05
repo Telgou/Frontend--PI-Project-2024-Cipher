@@ -19,14 +19,15 @@ import FlexBetween from "components/FlexBetween";
 import { showNotification } from "../../components/react-notifications";
 
 const registerSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  //email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
-  location: yup.string().required("required"),
-  occupation: yup.string().required("required"),
-  picture: yup.string().required("required"),
+  firstName: yup.string().required("First name is required").min(2, "First name must be at least 2 characters").max(50, "First name can't exceed 50 characters"),
+  lastName: yup.string().required("Last name is required").min(2, "Last name must be at least 2 characters").max(50, "Last name can't exceed 50 characters"),
+  //email: yup.string().email("Invalid email format").required("Email is required").max(50, "Email can't exceed 50 characters"),
+  password: yup.string().required("Password is required").min(5, "Password must be at least 5 characters"),
+  location: yup.string().required("Location is required"),
+  occupation: yup.string().required("Occupation is required"),
+  picture: yup.string().required("Picture is required"),
 });
+
 
 const loginSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
