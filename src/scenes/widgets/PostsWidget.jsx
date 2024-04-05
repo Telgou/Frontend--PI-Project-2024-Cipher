@@ -7,8 +7,9 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const myposts = useSelector((state) => state.myPosts);
+  const userimagepath = useSelector((state) => state.userImagePath);
   const token = useSelector((state) => state.token);
-  const { _id } = useSelector((state) => state.user);
+  const { ouruserid } = useSelector((state) => state.user);
 
   const getPosts = async () => {
     const response = await fetch("http://127.0.0.1:3001/posts", {
@@ -29,7 +30,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     );
     const data = await response.json();
     //console.log(data)
-    _id === userId ? dispatch(setMyPosts({ myPosts: data })) : dispatch(setPosts({ posts: data }));
+    ouruserid === userId ? dispatch(setMyPosts({ myPosts: data })) : dispatch(setPosts({ posts: data }));
     //console.log(myposts)
   };
 
@@ -44,7 +45,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   console.log()
   return (
     <>
-      {Array.isArray(myposts) && isProfile && _id===userId && myposts.map(
+      {Array.isArray(myposts) && isProfile && ouruserid===userId && myposts.map(
         ({
           _id,
           userId,
@@ -65,14 +66,14 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             description={description}
             location={location}
             picturePath={picturePath}
-            userPicturePath={userPicturePath}
+            userPicturePath={userimagepath}
             likes={likes}
             comments={comments}
           />
         )
       )}
 
-      {Array.isArray(posts) && (!isProfile || _id!==userId) && posts.map(
+      {Array.isArray(posts) && (!isProfile || ouruserid!==userId) && posts.map(
         ({
           _id,
           userId,
@@ -93,7 +94,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             description={description}
             location={location}
             picturePath={picturePath}
-            userPicturePath={userPicturePath}
+            userPicturePath={ (userId===ouruserid) ? userimagepath : userPicturePath}
             likes={likes}
             comments={comments}
           />

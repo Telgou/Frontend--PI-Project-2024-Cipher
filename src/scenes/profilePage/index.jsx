@@ -1,6 +1,7 @@
 import { Box, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setPosts, setMyPosts } from "state";
 import { useParams } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
@@ -11,9 +12,11 @@ import UserWidget from "scenes/widgets/UserWidget";
 
 const ProfilePage = () => {
     //const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [user, setUser] = useState(null);
     const { userId } = useParams();
     const { _id } = useSelector((state) => state.user);
+    const { ouruserid } = useSelector((state) => state.user);
     const token = useSelector((state) => state.token);
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
@@ -26,6 +29,21 @@ const ProfilePage = () => {
         //console.log(data);
         setUser(data);
     };
+
+    const getUserPosts = async () => {
+        const response = await fetch(
+            `http://127.0.0.1:3001/posts/${userId}`,
+            {
+                method: "GET",
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+        const data = await response.json();
+        console.log(data)
+        ouruserid === userId ? dispatch(setMyPosts({ myPosts: data })) : dispatch(setPosts({ posts: data }));
+        //console.log(myposts)
+    };
+
 
     useEffect(() => {
         getUser();
@@ -46,7 +64,7 @@ const ProfilePage = () => {
                 justifyContent="center"
             >
                 <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-                    <UserWidget userId={userId} picturePath={user.picturePath} />
+                    <UserWidget userId={userId} picturePath={user.picturePath} getUserPosts={getUserPosts} />
                     <Box m="2rem 0" />
                     <FriendListWidget userId={userId} />
                 </Box>
