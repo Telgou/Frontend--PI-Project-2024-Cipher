@@ -6,6 +6,11 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import { NotificationContainer } from "react-notifications";
+import Chat from "./scenes/chat/Chat";
+import Login from "./scenes/Login/Login";
+import Register from "./scenes/Register/Register";
+import SetAvatar from "./components/SetAvatar";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Lazy load your components
 const HomePage = React.lazy(() => import("scenes/homePage"));
@@ -36,6 +41,8 @@ function App() {
                 path="/profile/:userId"
                 element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
               />
+            <Route path="/setAvatar" element={<ErrorBoundary><SetAvatar /></ErrorBoundary>} />
+            <Route path="/chat" element={isAuth ? <Chat /> : <Navigate to="/loginn" />} />
             </Routes>
           </Suspense>
         </ThemeProvider>

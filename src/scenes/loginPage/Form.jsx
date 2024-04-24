@@ -29,7 +29,6 @@ const registerSchema = yup.object().shape({
   picture: yup.string().required("Picture is required"),
 });
 
-
 const loginSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
