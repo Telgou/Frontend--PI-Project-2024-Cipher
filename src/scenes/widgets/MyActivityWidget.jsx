@@ -19,10 +19,12 @@ import {
   } from "@mui/material";
   import FlexBetween from "components/FlexBetween";
   import Dropzone from "react-dropzone";
+  import UserImage from "components/UserImage";
   import WidgetWrapper from "components/WidgetWrapper";
   import { useState } from "react";
   import { useDispatch, useSelector } from "react-redux";
   import { setPosts } from "state";
+  import WebRTCVideoCall from "components/WebRTCVideoCall";
   
   const MyPostWidget = ({ picturePath }) => {
     const dispatch = useDispatch();
@@ -58,18 +60,9 @@ import {
   
     return (
       <WidgetWrapper>
-        <Box display="flex" alignItems="center">
-      <Box marginLeft={2}>
-        <Typography variant="h5" gutterBottom>
-          Liste des activites
-        </Typography>
-        <Typography variant="subtitle1">
-          activity 1 :
-          activity 2 :
-        </Typography>
-      </Box>
-    </Box>
+        <WebRTCVideoCall/>
         <FlexBetween gap="1.5rem">
+          <UserImage image={picturePath} />
           <InputBase
             placeholder="What's on your mind..."
             onChange={(e) => setPost(e.target.value)}
