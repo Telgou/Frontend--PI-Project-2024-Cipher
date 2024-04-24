@@ -73,7 +73,6 @@ const HomePage = () => {
           {showSportsWidget && <MyActivityWidget />}
           {showEventWidget && <MyEventWidget />}
           {/* <MyPostWidget picturePath={picturePath} /> */}
-          { showGroupWidget && <GroupsPostsWidget/>}
           {  !showEventWidget && !showGroupWidget && !showEventWidget && <PostsWidget userId={_id} />}
           {showSportsWidget && <ActivitysWidget userId={_id} />}
           {showGroupWidget && <GroupsWidget userId={_id} />}
