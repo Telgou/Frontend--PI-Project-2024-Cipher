@@ -20,6 +20,7 @@ const PostsWidget = () => {
       }
       const data = await response.json();
       dispatch(setPosts({ posts: data }));
+      console.log(data);
     } catch (error) {
       console.error("Error fetching groups:", error.message);
     }

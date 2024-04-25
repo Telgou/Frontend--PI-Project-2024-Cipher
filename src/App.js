@@ -33,6 +33,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Pregister />} />
               <Route path="/:tok" element={<LoginPage />} />
+              <Route path="/register" element={<Register />} />
+          <Route path="/lo" element={<Login/>} />
               <Route
                 path="/home"
                 element={isAuth ? <HomePage /> : <Navigate to="/" />}

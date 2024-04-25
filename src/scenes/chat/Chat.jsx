@@ -17,7 +17,7 @@ export default function Chat() {
   useEffect(() => {
     async function fetchData() {
       if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-        navigate("/");
+        navigate("/lo");
       } else {
         const user = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
         setCurrentUser(user);
@@ -38,7 +38,7 @@ export default function Chat() {
   useEffect(() => {
     async function fetchContacts() {
       try {
-        const { data } = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+        const { data } = await axios.get(`${allUsersRoute}`);
         setContacts(data);
       } catch (error) {
         console.error("Error fetching contacts:", error);
