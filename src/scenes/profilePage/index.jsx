@@ -39,7 +39,7 @@ const ProfilePage = () => {
             }
         );
         const data = await response.json();
-        console.log(data)
+        console.log(data, ouruserid, userId, ouruserid===userId)
         ouruserid === userId ? dispatch(setMyPosts({ myPosts: data })) : dispatch(setPosts({ posts: data }));
         //console.log(myposts)
     };
@@ -64,7 +64,7 @@ const ProfilePage = () => {
                 justifyContent="center"
             >
                 <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-                    <UserWidget userId={userId} picturePath={user.picturePath} getUserPosts={getUserPosts} />
+                    <UserWidget userId={userId} picturePath={user.picturePath} getUserPosts={getUserPosts} isprofile={true} />
                     <Box m="2rem 0" />
                     <FriendListWidget userId={userId} />
                 </Box>
