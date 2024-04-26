@@ -22,25 +22,25 @@ const HomePage = () => {
     setShowGroupWidget(true);
     setShowSportsWidget(false); // Set showSportsWidget to false when group icon is clicked
     setShowEventsWidget(false);
-    console.log("groupIcon appear? " , showGroupWidget);
+    //console.log("groupIcon appear? " , showGroupWidget);
   };
 
   const handleEventIconClick = () => {
     setShowEventsWidget(true);
     setShowSportsWidget(false); // Set showSportsWidget to false when group icon is clicked
     setShowGroupWidget(false);
-    console.log("groupIcon appear? " , showGroupWidget);
+    //console.log("groupIcon appear? " , showGroupWidget);
   };
 
   const handleActivityIconClick = () => {
     setShowGroupWidget(false);
     setShowSportsWidget(true); // Set showSportsWidget to true when sports icon is clicked
     setShowEventsWidget(false);
-    console.log("SportsIncon appear? " , showSportsWidget);
+    //console.log("SportsIncon appear? " , showSportsWidget);
   };
   useEffect(() => {
-    console.log("showGroupWidget:", showGroupWidget);
-    console.log("showSportsWidget:", showSportsWidget);
+    //console.log("showGroupWidget:", showGroupWidget);
+    //console.log("showSportsWidget:", showSportsWidget);
   }, [showGroupWidget, showSportsWidget]);
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { _id, picturePath } = useSelector((state) => state.user);
@@ -60,7 +60,7 @@ const HomePage = () => {
         justifyContent="space-between"
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-          <UserWidget userId={_id} picturePath={picturePath} />
+          <UserWidget userId={_id} picturePath={picturePath} isprofile={false} />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
@@ -68,7 +68,7 @@ const HomePage = () => {
         >
           {showGroupWidget && <MyGroupWidget/>}
 
-          { !showEventWidget && !showGroupWidget && !showEventWidget && <MyPostWidget/>}
+          { !showEventWidget && !showGroupWidget && !showEventWidget && <MyPostWidget isprofile={false} />}
 
           {showSportsWidget && <MyActivityWidget />}
           {showEventWidget && <MyEventWidget />}

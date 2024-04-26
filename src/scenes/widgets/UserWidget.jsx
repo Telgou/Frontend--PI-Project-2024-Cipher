@@ -17,11 +17,15 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import Dropzone from "react-dropzone";
 
-const UserWidget = ({ userId, picturePath, getUserPosts }) => {
+const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
+
   const [user, setUser] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [allOpen, setallOpen] = useState(false);
+  const [singular, setSingular] = useState(undefined);
   const [file, setFile] = useState(null);
   const { palette } = useTheme();
+  const [isProfile] = useState(isprofile.isprofile);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userimagepath = useSelector((state) => state.userImagePath);
@@ -38,6 +42,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
     });
     const data = await response.json();
     setUser(data);
+    console.log(user);
   };
 
   useEffect(() => {
@@ -53,6 +58,9 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
     lastName,
     location,
     occupation,
+    github,
+    linkedin,
+    twitter,
     viewedProfile,
     impressions,
     friends,
@@ -61,27 +69,33 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
   } = user;
 
   ///////////// Edit User Modal //////////////
-  const handleEditOpen = () => {
+  const openEditModal = (singular) => {
     setEditOpen(true);
   };
-  const handleEditClose = () => {
+  const clodeEditModal = () => {
     setEditOpen(false);
   };
 
-  const handleUpdateUserInfo = async () => {
+  const UpdateUserInfo = async () => {
     try {
       const formData = new FormData();
-      formData.append("firstName", document.getElementById("firstName").value);
-      formData.append("lastName", document.getElementById("lastName").value);
-      formData.append("occupation", document.getElementById("occupation").value);
-      formData.append("location", document.getElementById("location").value);
-      formData.append("department", document.getElementById("department").value);
-      formData.append("educationalUnit", document.getElementById("educationalUnit").value);
+      if (singular == undefined) {
+        formData.append("firstName", document.getElementById("firstName").value);
+        formData.append("lastName", document.getElementById("lastName").value);
+        formData.append("occupation", document.getElementById("occupation").value);
+        formData.append("location", document.getElementById("location").value);
+        formData.append("department", document.getElementById("department").value);
+        formData.append("educationalUnit", document.getElementById("educationalUnit").value);
 
-      if (file != null) {
-        formData.append("picturePath", file.name);
-        formData.append("picture", file);
+        if (file != null) {
+          formData.append("picturePath", file.name);
+          formData.append("picture", file);
+        }
       }
+      if (singular == 'github' || singular == undefined) formData.append("github", document.getElementById("github").value);
+      if (singular == 'linkedin' || singular == undefined) formData.append("linkedin", document.getElementById("linkedin").value);
+      if (singular == 'twitter' || singular == undefined) formData.append("twitter", document.getElementById("twitter").value);
+
       console.log("user", user);
       console.log("formdata", formData);
       const response = await fetch(`http://127.0.0.1:3001/users/${userId}/update`, {
@@ -115,7 +129,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
         );*/
       }
       getUser();
-      handleEditClose();
+      clodeEditModal();
     } catch (error) {
       console.error(error);
     }
@@ -157,7 +171,10 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
             <Typography color={medium}>{friends?.length} friends</Typography>
           </Box>
         </FlexBetween>
-        {ouruser._id == userId && <ManageAccountsOutlined style={{ cursor: 'pointer' }} onClick={() => handleEditOpen()} />}
+        {ouruser._id == userId && <ManageAccountsOutlined style={{ cursor: 'pointer' }} onClick={() => {
+          setSingular(undefined);
+          openEditModal();
+        }} /> }
       </FlexBetween>
 
       <Divider />
@@ -177,7 +194,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
       <Divider />
 
       {/* THIRD ROW */}
-      <Box p="1rem 0">
+      {isprofile && <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
           <Typography color={medium}>Who's viewed your profile</Typography>
           <Typography color={main} fontWeight="500">
@@ -190,17 +207,33 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
             {impressions}
           </Typography>
         </FlexBetween>
-      </Box>
+      </Box>}
 
       <Divider />
 
       {/* FOURTH ROW */}
-      <Box p="1rem 0">
+      {isprofile && <Box p="1rem 0">
         <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
           Social Profiles
         </Typography>
 
-        <FlexBetween gap="1rem" mb="0.5rem">
+        {user.github && <FlexBetween gap="1rem">
+          <FlexBetween gap="1rem">
+            <img src="../assets/github.png" alt="github" style={{ objectFit: 'contain' }} />
+            <Box>
+              <Typography color={main} fontWeight="500">
+                Github
+              </Typography>
+              <Typography color={medium}>Developer Platform</Typography>
+            </Box>
+          </FlexBetween>
+          <EditOutlined sx={{ color: main }} style={{ cursor: 'pointer' }} onClick={() => {
+            setSingular('github');
+            openEditModal("github")
+          }} />
+        </FlexBetween>}
+
+        {user.twitter && <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
             <img src="../assets/twitter.png" alt="twitter" />
             <Box>
@@ -210,10 +243,14 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
               <Typography color={medium}>Social Network</Typography>
             </Box>
           </FlexBetween>
-          {ouruser._id == userId && <EditOutlined sx={{ color: main }} />}
-        </FlexBetween>
+          {ouruser._id == userId && <EditOutlined sx={{ color: main }} onClick={() => {
+            setSingular('twitter');
+            openEditModal("twitter")
+          }} />}
+        </FlexBetween>}
 
-        <FlexBetween gap="1rem">
+
+        {user.linkedin && <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
             <img src="../assets/linkedin.png" alt="linkedin" />
             <Box>
@@ -223,15 +260,18 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
               <Typography color={medium}>Network Platform</Typography>
             </Box>
           </FlexBetween>
-          {ouruser._id == userId && <EditOutlined sx={{ color: main }} />}
-        </FlexBetween>
-      </Box>
+          {ouruser._id == userId && <EditOutlined sx={{ color: main }} onClick={() => {
+            setSingular('linkedin');
+            openEditModal("linkedin")
+          }} />}
+        </FlexBetween>}
+      </Box>}
 
 
       {/* Edit infos Modal */}
       <Modal
         open={editOpen}
-        onClose={handleEditClose}
+        onClose={clodeEditModal}
         aria-labelledby="edit-user-info-modal"
         aria-describedby="modal-to-edit-user-information"
       >
@@ -250,7 +290,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
             Edit Personal Information
           </Typography>
 
-          <Grid container spacing={2}>
+          {singular == undefined && <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
                 id="firstName"
@@ -332,10 +372,37 @@ const UserWidget = ({ userId, picturePath, getUserPosts }) => {
                 defaultValue={educationalUnit}
               />
             </Grid>
+          </Grid>}
+
+          <Grid container mt={2} spacing={2}>
+            {(singular == 'linkedin' || singular == undefined) && <Grid item xs={6}>
+              <TextField
+                id="linkedin"
+                label="linkedin"
+                variant="outlined"
+                defaultValue={linkedin}
+              />
+            </Grid>}
+            {(singular == 'github' || singular == undefined) && <Grid item xs={6}>
+              <TextField
+                id="github"
+                label="github"
+                variant="outlined"
+                defaultValue={github}
+              />
+            </Grid>}
+            {(singular == 'twitter' || singular == undefined) && <Grid item xs={6}>
+              <TextField
+                id="twitter"
+                label="twitter"
+                variant="outlined"
+                defaultValue={twitter}
+              />
+            </Grid>}
           </Grid>
 
           <Box mt={2} textAlign="right">
-            <Button variant="contained" onClick={handleUpdateUserInfo}>
+            <Button variant="contained" onClick={() => UpdateUserInfo()}>
               Update
             </Button>
           </Box>
