@@ -41,7 +41,9 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
   const alt = theme.palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;
-
+  const handleChatRedirect = () => {
+    navigate('/lo');
+  };
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -99,7 +101,9 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <Message sx={{ fontSize: "25px" }} />
+          <div onClick={handleChatRedirect}>
+              <Message sx={{ fontSize: "25px" }} />
+            </div>
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>

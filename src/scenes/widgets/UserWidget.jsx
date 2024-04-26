@@ -18,6 +18,7 @@ import * as yup from "yup";
 import Dropzone from "react-dropzone";
 
 const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
+
   const [user, setUser] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [allOpen, setallOpen] = useState(false);
@@ -29,6 +30,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
   const dispatch = useDispatch();
   const userimagepath = useSelector((state) => state.userImagePath);
   const token = useSelector((state) => state.token);
+  const ouruser = useSelector((state) => state.user);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
@@ -134,12 +136,12 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
   };
   // eslint-disable-next-line
   const EditSchema = yup.object().shape({
-    firstName: yup.string().required("required"),
-    lastName: yup.string().required("required"),
-    password: yup.string().required("required"),
-    location: yup.string().required("required"),
-    occupation: yup.string().required("required"),
-    picture: yup.string().required("required"),
+    firstName: yup.string().required("First name is required").min(2, "First name must be at least 2 characters").max(50, "First name can't exceed 50 characters"),
+    lastName: yup.string().required("Last name is required").min(2, "Last name must be at least 2 characters").max(50, "Last name can't exceed 50 characters"),
+    password: yup.string().required("Password is required").min(5, "Password must be at least 5 characters"),
+    location: yup.string().required("Location is required"),
+    occupation: yup.string().required("Occupation is required"),
+    picture: yup.string().required("Picture is required"),
   });
 
   return (
@@ -151,7 +153,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
         onClick={() => navigate(`/profile/${userId}`)}
       >
         <FlexBetween gap="1rem">
-          <UserImage image={userimagepath} />
+          <UserImage image={picturePath} />
           <Box>
             <Typography
               variant="h4"
@@ -169,10 +171,10 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
             <Typography color={medium}>{friends?.length} friends</Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined style={{ cursor: 'pointer' }} onClick={() => {
+        {ouruser._id == userId && <ManageAccountsOutlined style={{ cursor: 'pointer' }} onClick={() => {
           setSingular(undefined);
           openEditModal();
-        }} />
+        }} /> }
       </FlexBetween>
 
       <Divider />
@@ -241,11 +243,12 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
               <Typography color={medium}>Social Network</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} onClick={() => {
+          {ouruser._id == userId && <EditOutlined sx={{ color: main }} onClick={() => {
             setSingular('twitter');
             openEditModal("twitter")
-          }} />
+          }} />}
         </FlexBetween>}
+
 
         {user.linkedin && <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
@@ -257,10 +260,10 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
               <Typography color={medium}>Network Platform</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} onClick={() => {
+          {ouruser._id == userId && <EditOutlined sx={{ color: main }} onClick={() => {
             setSingular('linkedin');
             openEditModal("linkedin")
-          }} />
+          }} />}
         </FlexBetween>}
       </Box>}
 

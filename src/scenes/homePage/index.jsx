@@ -12,7 +12,7 @@ import ActivitysWidget from "scenes/widgets/ActivitysWidget";
 import EventsWidget from "scenes/widgets/EventsWidget";
 //import AdvertWidget from "scenes/widgets/AdvertWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
-import GroupsPostsWidget from "../widgets/GroupsPostsWidget";
+import GroupsWidget from "scenes/widgets/GroupsWidget";
 
 const HomePage = () => {
   const [showGroupWidget, setShowGroupWidget] = useState(false);
@@ -66,16 +66,16 @@ const HomePage = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          {showGroupWidget && <MyGroupWidget picturePath={picturePath} />}
+          {showGroupWidget && <MyGroupWidget/>}
 
           { !showEventWidget && !showGroupWidget && !showEventWidget && <MyPostWidget isprofile={false} />}
 
           {showSportsWidget && <MyActivityWidget />}
           {showEventWidget && <MyEventWidget />}
           {/* <MyPostWidget picturePath={picturePath} /> */}
-          { showGroupWidget && <GroupsPostsWidget/>}
           {  !showEventWidget && !showGroupWidget && !showEventWidget && <PostsWidget userId={_id} />}
           {showSportsWidget && <ActivitysWidget userId={_id} />}
+          {showGroupWidget && <GroupsWidget userId={_id} />}
           {showEventWidget && <EventsWidget userId={_id} />}
           
           

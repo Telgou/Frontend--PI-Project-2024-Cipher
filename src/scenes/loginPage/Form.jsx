@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import io from 'socket.io-client';
 import {
   Box,
   Button,
@@ -28,7 +29,6 @@ const registerSchema = yup.object().shape({
   picture: yup.string().required("Picture is required"),
 });
 
-
 const loginSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
@@ -48,7 +48,7 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
-
+const socket = io('http://localhost:8082'); 
 const Form = () => {
   const { tok } = useParams();
   const [pageType, setPageType] = useState("login");
@@ -104,6 +104,7 @@ const Form = () => {
     onSubmitProps.resetForm();
     console.log(loggedIn);
     if (loggedIn) {
+	const userId = loggedIn.user._id;
       dispatch(
         setUserImagePath(loggedIn.user.picturePath)
       );
@@ -115,6 +116,7 @@ const Form = () => {
         })
       );
       navigate("/home");
+	 socket.emit('login', userId);
     }
   };
 
