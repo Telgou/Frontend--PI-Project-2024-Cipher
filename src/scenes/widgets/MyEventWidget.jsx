@@ -61,11 +61,10 @@ import {
         <Box display="flex" alignItems="center">
       <Box marginLeft={2}>
         <Typography variant="h5" gutterBottom>
-          Liste des evenements
+          Liste des évènements
         </Typography>
         <Typography variant="subtitle1">
-          evenement 1 :
-          evenement 2 :
+      
         </Typography>
       </Box>
     </Box>

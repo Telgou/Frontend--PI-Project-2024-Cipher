@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EventWidget = ({
   postId,
@@ -7,10 +7,16 @@ const EventWidget = ({
   dateDebut,
 }) => {
   const [isParticipating, setIsParticipating] = useState(false);
+  const [participantCount, setParticipantCount] = useState(() => {
+    // Récupérer le nombre de participants depuis le localStorage
+    const storedCount = localStorage.getItem(`event_${postId}_participants`);
+    return storedCount ? parseInt(storedCount) : 0;
+  });
+  const [alreadyParticipated, setAlreadyParticipated] = useState(false);
 
   const handleParticipate = async () => {
     // Empêcher les clics répétés pendant le chargement
-    if (isParticipating) {
+    if (isParticipating || alreadyParticipated) {
       return;
     }
 
@@ -20,7 +26,17 @@ const EventWidget = ({
     try {
       // Simuler une participation à l'événement en attendant 1 seconde
       await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log("Successfully participated in event:", postId);
+      console.log("Successfully participated in event:", title);
+
+      // Incrémenter le nombre de participants
+      const newCount = participantCount + 1;
+      setParticipantCount(newCount);
+
+      // Marquer l'utilisateur comme ayant déjà participé à cet événement
+      setAlreadyParticipated(true);
+
+      // Sauvegarder le nouveau nombre de participants dans le localStorage
+      localStorage.setItem(`event_${postId}_participants`, newCount.toString());
     } catch (error) {
       // Gérer les erreurs en cas d'échec de la participation
       console.error("Failed to participate in event:", error);
@@ -29,6 +45,19 @@ const EventWidget = ({
       setIsParticipating(false);
     }
   };
+
+  useEffect(() => {
+    // Vérifier si l'utilisateur a déjà participé à cet événement
+    const storedCount = localStorage.getItem(`event_${postId}_participants`);
+    if (storedCount) {
+      setAlreadyParticipated(true);
+    }
+
+    // Nettoyer le localStorage lorsque le composant est démonté
+    return () => {
+      localStorage.removeItem(`event_${postId}_participants`);
+    };
+  }, [postId]);
 
   return (
     <Box sx={{ 
@@ -55,19 +84,20 @@ const EventWidget = ({
         {title}
       </Typography>
       <Typography sx={{ color: "text.secondary", marginBottom: "0.5rem" }}>{dateDebut}</Typography>
+      <Typography sx={{ color: "text.secondary", marginBottom: "0.5rem" }}>Nombre de participants: {participantCount}</Typography>
       <Button 
         variant="contained" 
         onClick={handleParticipate} 
-        disabled={isParticipating} // Désactiver le bouton pendant le chargement
+        disabled={isParticipating || alreadyParticipated} // Désactiver le bouton pendant le chargement ou si l'utilisateur a déjà participé
         sx={{ 
-          backgroundColor: "#4caf50",
+          backgroundColor: alreadyParticipated ? "#9e9e9e" : "#4caf50", // Changer la couleur du bouton si l'utilisateur a déjà participé
           color: "white",
           "&:hover": {
-            backgroundColor: "#388e3c",
+            backgroundColor: alreadyParticipated ? "#9e9e9e" : "#388e3c", // Changer la couleur au survol si l'utilisateur a déjà participé
           },
         }}
       >
-        {isParticipating ? "Participation en cours..." : "Participer"}
+        {alreadyParticipated ? "Already participated" : (isParticipating ? "Participation en cours..." : "Participer")}
       </Button>
     </Box>
   );
