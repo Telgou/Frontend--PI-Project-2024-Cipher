@@ -35,9 +35,9 @@ export const authSlice = createSlice({
       state.posts = action.payload.posts;
     },
     setMyPosts: (state, action) => {
-      state.myPosts = action.payload.myPosts.map(post => ({
+      state.myPosts = action.payload.map(post => ({
         ...post,
-        userPicturePath: state.userImagePath // Assuming 'userImagePath' is the field containing the user's profile image path in each post
+        userPicturePath: state.userImagePath
       }));
     },
     setPost: (state, action) => {

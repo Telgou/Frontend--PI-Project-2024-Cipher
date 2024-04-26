@@ -28,6 +28,7 @@ import { setPosts, setMyPosts } from "state";
 const MyPostWidget = (isprofile) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
+  const [isProfile] = useState(isprofile.isprofile);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
@@ -37,6 +38,9 @@ const MyPostWidget = (isprofile) => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
+
+  //const otherposts = useSelector((state) => state.auth.posts);
+  //const myPosts = useSelector((state) => state.auth.myPosts);
 
   const handlePost = async () => {
     const formData = new FormData();
@@ -55,13 +59,16 @@ const MyPostWidget = (isprofile) => {
 
     const userid = new FormData();
     userid.append("userId", _id);
-    const resposts = await fetch(
-      isprofile ? `http://127.0.0.1:3001/posts/${_id}` : 'http://127.0.0.1:3001/posts', {
-      method: "GET",
+    console.log(isProfile, isProfile==true)
+    const url = isProfile===true ? `http://127.0.0.1:3001/posts/${_id}` : 'http://127.0.0.1:3001/posts';
+    const resposts = await fetch(url, {
+      method: "GET",  
       headers: { Authorization: `Bearer ${token}` },
     });
     const posts = await resposts.json();
-    (isprofile && _id===userid) ? dispatch(setMyPosts(posts)) : dispatch(setPosts({ posts }));
+    console.log(posts)
+    //(isProfile==true) ? dispatch(setMyPosts(posts)) : 
+    dispatch(setPosts({ posts }));
     setImage(null);
     setPost("");
   };
