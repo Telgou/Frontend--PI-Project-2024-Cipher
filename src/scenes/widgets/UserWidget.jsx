@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { setUserImagePath } from "state";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import Dropzone from "react-dropzone";
 
@@ -174,7 +174,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
         {ouruser._id == userId && <ManageAccountsOutlined style={{ cursor: 'pointer' }} onClick={() => {
           setSingular(undefined);
           openEditModal();
-        }} /> }
+        }} />}
       </FlexBetween>
 
       <Divider />
@@ -218,48 +218,56 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
         </Typography>
 
         {user.github && <FlexBetween gap="1rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/github.png" alt="github" style={{ objectFit: 'contain' }} />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Github
-              </Typography>
-              <Typography color={medium}>Developer Platform</Typography>
-            </Box>
-          </FlexBetween>
+
+          <a href={'https://github.com/' + user.github} style={{textDecoration:'none'}} target="_blank" rel="noopener noreferrer" >
+            <FlexBetween gap="1rem">
+              <img src="../assets/github.png" alt="github" style={{ objectFit: 'contain' }} />
+              <Box>
+                <Typography color={main} fontWeight="500">
+                  Github
+                </Typography>
+                <Typography color={medium}>Developer Platform</Typography>
+              </Box>
+            </FlexBetween>
+          </a>
           <EditOutlined sx={{ color: main }} style={{ cursor: 'pointer' }} onClick={() => {
             setSingular('github');
             openEditModal("github")
           }} />
         </FlexBetween>}
 
-        {user.twitter && <FlexBetween gap="1rem" mb="0.5rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Twitter
-              </Typography>
-              <Typography color={medium}>Social Network</Typography>
-            </Box>
-          </FlexBetween>
-          {ouruser._id == userId && <EditOutlined sx={{ color: main }} onClick={() => {
-            setSingular('twitter');
-            openEditModal("twitter")
-          }} />}
-        </FlexBetween>}
+        {user.twitter &&
+          <FlexBetween gap="1rem" mb="0.5rem">
+            <a href={'https://twitter.com/' + user.twitter} style={{textDecoration:'none'}} target="_blank" rel="noopener noreferrer" >
+              <FlexBetween gap="1rem">
+                <img src="../assets/twitter.png" alt="twitter" />
+                <Box>
+                  <Typography color={main} fontWeight="500">
+                    Twitter
+                  </Typography>
+                  <Typography color={medium}>Social Network</Typography>
+                </Box>
+              </FlexBetween>
+            </a>
+            {ouruser._id == userId && <EditOutlined sx={{ color: main }} onClick={() => {
+              setSingular('twitter');
+              openEditModal("twitter")
+            }} />}
+          </FlexBetween>}
 
 
         {user.linkedin && <FlexBetween gap="1rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Linkedin
-              </Typography>
-              <Typography color={medium}>Network Platform</Typography>
-            </Box>
-          </FlexBetween>
+          <a href={'https://twitter.com/' + user.twitter} style={{textDecoration:'none'}} target="_blank" rel="noopener noreferrer" >
+            <FlexBetween gap="1rem">
+              <img src="../assets/linkedin.png" alt="linkedin" />
+              <Box>
+                <Typography color={main} fontWeight="500">
+                  Linkedin
+                </Typography>
+                <Typography color={medium}>Network Platform</Typography>
+              </Box>
+            </FlexBetween>
+          </a>
           {ouruser._id == userId && <EditOutlined sx={{ color: main }} onClick={() => {
             setSingular('linkedin');
             openEditModal("linkedin")
@@ -409,7 +417,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
 
         </Box>
       </Modal>
-    </WidgetWrapper>
+    </WidgetWrapper >
   );
 };
 
