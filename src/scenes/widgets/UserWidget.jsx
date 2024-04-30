@@ -10,7 +10,7 @@ import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useDispatch } from "react-redux";
-import { setUserImagePath } from "state";
+import { setUserImagePath,setfullname, setuser } from "state";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -41,8 +41,9 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
-    setUser(data);
-    console.log(user);
+    await setUser(data);
+    
+    //console.log(user);
   };
 
   useEffect(() => {
@@ -96,8 +97,8 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
       if (singular == 'linkedin' || singular == undefined) formData.append("linkedin", document.getElementById("linkedin").value);
       if (singular == 'twitter' || singular == undefined) formData.append("twitter", document.getElementById("twitter").value);
 
-      console.log("user", user);
-      console.log("formdata", formData);
+      //console.log("user", user);
+      //console.log("formdata", formData);
       const response = await fetch(`http://127.0.0.1:3001/users/${userId}/update`, {
         method: "PUT",
         headers: {
@@ -116,11 +117,13 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
       if (response.status === 200) {
         const updateduser = await responseData.user;
         getUserPosts()
-        //console.log(updateduser)
+        console.log(updateduser)
         dispatch(
-          setUserImagePath(updateduser.picturePath)
+          setUserImagePath(updateduser.picturePath),
         );
-
+        dispatch(
+          setuser(updateduser)
+        );
         /*
         dispatch(
           setLogin({
@@ -257,7 +260,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
 
 
         {user.linkedin && <FlexBetween gap="1rem">
-          <a href={'https://twitter.com/' + user.twitter} style={{textDecoration:'none'}} target="_blank" rel="noopener noreferrer" >
+          <a href={'https://linkedin.com/in/' + user.linkedin} style={{textDecoration:'none'}} target="_blank" rel="noopener noreferrer" >
             <FlexBetween gap="1rem">
               <img src="../assets/linkedin.png" alt="linkedin" />
               <Box>

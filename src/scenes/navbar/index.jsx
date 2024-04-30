@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
@@ -30,7 +30,12 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const [user, setUser] = useState(useSelector((state) => state.user));
+  const [fullName, setfullName] = useState(`${user.firstName} ${user.lastName}`);
+  useEffect(() => {
+    setfullName(`${user.firstName} ${user.lastName}`);
+  }, [user]);
+
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const theme = useTheme();
@@ -40,7 +45,6 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
-  const fullName = `${user.firstName} ${user.lastName}`;
   const handleChatRedirect = () => {
     navigate('/lo');
   };
@@ -102,8 +106,8 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
             )}
           </IconButton>
           <div onClick={handleChatRedirect}>
-              <Message sx={{ fontSize: "25px" }} />
-            </div>
+            <Message sx={{ fontSize: "25px" }} />
+          </div>
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>
