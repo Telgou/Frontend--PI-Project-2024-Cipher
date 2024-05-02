@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@hcaptcha/react-hcaptcha": "^1.10.1",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.11",
     "@reduxjs/toolkit": "^1.8.6",
@@ -17,7 +18,8 @@
     "emoji-picker-react": "^4.8.0",
     "formik": "^2.2.9",
     "http-proxy-middleware": "^2.0.6",
-    "openai": "^3.2.1",
+    "formik": "^2.2.9",
+    "socket.io-client": "^4.7.5",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
     "react-bootstrap": "^2.10.1",

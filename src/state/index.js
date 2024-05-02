@@ -20,6 +20,18 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
+    setuser: (state, action) => {
+      //console.log(action.payload)
+      const newUser = action.payload;
+      console.log(state.user)
+      if (newUser) {
+        state.user = action.payload;
+        //console.log(state.user)
+        state.fullName = `${newUser.firstName} ${newUser.lastName}`;
+      } else {
+        console.error("Invalid user payload");
+      }
+    },
     setLogout: (state) => {
       state.user = null;
       state.token = null;
@@ -49,7 +61,7 @@ export const authSlice = createSlice({
 
       if (action.payload.post.userId === state.user._id) {
         const updatedMyPosts = state.myPosts.map((post) => {
-          if (post._id === action.payload.post._id) return action.payload.post; 
+          if (post._id === action.payload.post._id) return action.payload.post;
           return post;
         });
         state.myPosts = updatedMyPosts;
@@ -61,6 +73,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost, setMyPosts, setUserImagePath } =
+export const { setMode, setLogin, setfullname, setuser, setLogout, setFriends, setPosts, setPost, setMyPosts, setUserImagePath } =
   authSlice.actions;
 export default authSlice.reducer;

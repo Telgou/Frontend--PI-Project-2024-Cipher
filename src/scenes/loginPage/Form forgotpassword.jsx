@@ -13,13 +13,19 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import { showNotification } from "../../components/react-notifications";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useState } from "react";
 
 const resetSchema = yup.object().shape({
   password: yup.string().required("required"),
+  confirmPassword: yup.string()
+    .required('required')
+    .oneOf([yup.ref('password'), null], 'Passwords must match')
 });
 
 const initialValuesReset = {
   password: "",
+  confirmPassword: "",
 };
 
 const PassresetForm = () => {
@@ -34,7 +40,7 @@ const PassresetForm = () => {
       password: values.password,
       token: tok.split('=pass')[1]
     };
-  
+
     const ResetResponse = await fetch(
       "http://127.0.0.1:3001/auth/resetpass",
       {
@@ -45,11 +51,11 @@ const PassresetForm = () => {
         body: JSON.stringify(requestBody)
       }
     );
-  
+
     const Reset = await ResetResponse.json();
     onSubmitProps.resetForm();
     console.log(Reset);
-  
+
     console.log(ResetResponse.status);
     if (ResetResponse.status === 200) { // Use strict comparison operator
       console.log(ResetResponse.status, "200");
@@ -65,10 +71,15 @@ const PassresetForm = () => {
       showNotification('info', 'There has been an error resetting your password');
     }
   };
-  
+
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     await Reset(values, onSubmitProps);
+  };
+
+  const [button, setbutton] = useState(true);
+  const captchaVerify = () => {
+    setbutton(false);
   };
 
   return (
@@ -108,10 +119,25 @@ const PassresetForm = () => {
               helperText={touched.password && errors.password}
               sx={{ gridColumn: "span 4" }}
             />
+            <TextField
+              label="Confirm Password"
+              type="password"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.confirmPassword}
+              name="confirmPassword"
+              error={Boolean(touched.confirmPassword) && Boolean(errors.confirmPassword)}
+              helperText={touched.confirmPassword && errors.confirmPassword}
+              sx={{ gridColumn: "span 4" }}
+            />
           </Box>
 
           {/* BUTTONS */}
-          <Box>
+          <Box style={{ marginTop: '2rem' }}>
+            <HCaptcha
+              sitekey={'f7bca377-9e98-4dce-8ff6-1a3949121602' || process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY}
+              onVerify={captchaVerify}
+            />
             <Button
               fullWidth
               type="submit"
@@ -122,6 +148,7 @@ const PassresetForm = () => {
                 color: palette.background.alt,
                 "&:hover": { color: palette.primary.main },
               }}
+              disabled={button}
             >
               {"Change Password"}
             </Button>

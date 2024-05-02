@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin, setUserImagePath } from "state";
 import Dropzone from "react-dropzone";
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import FlexBetween from "components/FlexBetween";
 import { showNotification } from "../../components/react-notifications";
 
@@ -48,7 +49,7 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
-const socket = io('http://localhost:8082'); 
+const socket = io('http://localhost:8082');
 const Form = () => {
   const { tok } = useParams();
   const [pageType, setPageType] = useState("login");
@@ -134,19 +135,15 @@ const Form = () => {
       console.error("Login failed:", loggedIn.message);
   }
 };
-
-const handleFormSubmit = async (values, onSubmitProps) => {
-  if (isLogin) await login(values, onSubmitProps);
-  if (isRegister) {
-    await register(values, onSubmitProps);
-    // Retrieve the registered user data from local storage
-    const userData = JSON.parse(localStorage.getItem('chat-app-current-user'));
-    // Check if userData is not null before setting it in local storage
-    if (userData) {
-      localStorage.setItem('chat-app-current-user', JSON.stringify(userData));
+      navigate("/home");
+	 socket.emit('login', userId);
     }
-  }
-};
+  };
+
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    if (isLogin) await login(values, onSubmitProps);
+    if (isRegister) await register(values, onSubmitProps);
+  };
 
   return (
     <Formik
@@ -279,7 +276,11 @@ const handleFormSubmit = async (values, onSubmitProps) => {
           </Box>
 
           {/* BUTTONS */}
-          <Box>
+          <Box style={{marginTop:'2rem'}}>
+            <HCaptcha
+              sitekey={'f7bca377-9e98-4dce-8ff6-1a3949121602' || process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY}
+              onVerify={captchaVerify}
+            />
             <Button
               fullWidth
               type="submit"
@@ -290,6 +291,7 @@ const handleFormSubmit = async (values, onSubmitProps) => {
                 color: palette.background.alt,
                 "&:hover": { color: palette.primary.main },
               }}
+              disabled={button}
             >
               {isLogin ? "LOGIN" : "REGISTER"}
             </Button>
