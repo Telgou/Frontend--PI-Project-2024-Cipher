@@ -42,7 +42,7 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
 
   const fullName = `${user.firstName} ${user.lastName}`;
   const handleChatRedirect = () => {
-    navigate('/lo');
+    navigate('/setAvatar');
   };
 
   return (

@@ -91,6 +91,10 @@ const Form = () => {
       console.log(savedUserResponse.status, "201")
       showNotification('success', 'You have registered successfully')
       setPageType("login");
+      localStorage.setItem(
+        'chat-app-current-user',
+        JSON.stringify(savedUser.user)
+      );
     }
   };
 
@@ -103,27 +107,46 @@ const Form = () => {
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
     console.log(loggedIn);
-    if (loggedIn) {
-	const userId = loggedIn.user._id;
-      dispatch(
-        setUserImagePath(loggedIn.user.picturePath)
+    if (loggedIn && loggedIn.token) {  // Ensure loggedIn has the token as part of the validation
+      // Save user data to localStorage
+      console.log("infooooo:",loggedIn);
+      localStorage.setItem(
+        'chat-app-current-user',
+        JSON.stringify(loggedIn.user)
       );
+      localStorage.setItem('authToken', loggedIn.token);
+   console.log("storageeeeee:",localStorage);
+      // Dispatch actions to update Redux state
+      dispatch(setUserImagePath(loggedIn.user.picturePath));
+      dispatch(setLogin({
+        user: loggedIn.user,
+        token: loggedIn.token,
+      }));
 
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
+      // Navigate to the home page
       navigate("/home");
-	 socket.emit('login', userId);
-    }
-  };
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
-    if (isLogin) await login(values, onSubmitProps);
-    if (isRegister) await register(values, onSubmitProps);
-  };
+      // Emit login event to socket
+      const userId = loggedIn.user._id;
+      socket.emit('login', userId);
+  } else {
+      // Handle login failure (e.g., display an error message)
+      console.error("Login failed:", loggedIn.message);
+  }
+};
+
+const handleFormSubmit = async (values, onSubmitProps) => {
+  if (isLogin) await login(values, onSubmitProps);
+  if (isRegister) {
+    await register(values, onSubmitProps);
+    // Retrieve the registered user data from local storage
+    const userData = JSON.parse(localStorage.getItem('chat-app-current-user'));
+    // Check if userData is not null before setting it in local storage
+    if (userData) {
+      localStorage.setItem('chat-app-current-user', JSON.stringify(userData));
+    }
+  }
+};
 
   return (
     <Formik
