@@ -42,7 +42,6 @@ function App() {
                 path="/profile/:userId"
                 element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
               />
-            <Route path="/setAvatar" element={<ErrorBoundary><SetAvatar /></ErrorBoundary>} />
             <Route path="/chat" element={isAuth ? <Chat /> : <Navigate to="/loginn" />} />
             <Route path="/chatGPT" element={<ChatGPT />} />
             </Routes>

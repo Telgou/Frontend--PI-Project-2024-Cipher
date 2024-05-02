@@ -15,26 +15,55 @@ import {
   Message,
   DarkMode,
   LightMode,
-  Notifications,
   Help,
   Menu,
   Close,
   Event, Group, SportsSoccer
 } from "@mui/icons-material";
+import Notification from "../../assets/notification.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
-const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIconClick }) => {
+const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIconClick,socket}) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [user, setUser] = useState(useSelector((state) => state.user));
   const [fullName, setfullName] = useState(`${user.firstName} ${user.lastName}`);
+  const [notifications, setNotifications] = useState([]);
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     setfullName(`${user.firstName} ${user.lastName}`);
   }, [user]);
+
+  useEffect(() => {
+    if (socket) {
+    socket.on("getNotification", (data) => {
+      setNotifications((prev) => [...prev, data]);
+    });
+  }
+  }, [socket]);
+  const displayNotification = ({ senderName, type }) => {
+    let action;
+
+    if (type === 1) {
+      action = "liked";
+    } else if (type === 2) {
+      action = "commented";
+    } else {
+      action = "shared";
+    }
+    return (
+      <span className="notification">{`${senderName} ${action} your post.`}</span>
+    );
+  };
+
+  const handleRead = () => {
+    setNotifications([]);
+    setOpen(false);
+  };
 
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
@@ -46,7 +75,7 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
   const alt = theme.palette.background.alt;
 
   const handleChatRedirect = () => {
-    navigate('/setAvatar');
+    navigate('/chat');
   };
 
   return (
@@ -108,7 +137,23 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
           <div onClick={handleChatRedirect}>
             <Message sx={{ fontSize: "25px" }} />
           </div>
-          <Notifications sx={{ fontSize: "25px" }} />
+          <div className="icons">
+        <div className="icon" onClick={() => setOpen(!open)}>
+          <img src={Notification} className="iconImg" alt="" />
+          {
+notifications.length >0 &&
+            <div className="counter">{notifications.length}</div>
+          }
+        </div>
+      </div>
+      {open && (
+        <div className="notifications">
+          {notifications.map((n) => displayNotification(n))}
+          <button className="nButton" onClick={handleRead}>
+            Mark as read
+          </button>
+        </div>
+         )}
           <Help sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>
             <Select
@@ -183,7 +228,6 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
               )}
             </IconButton>
             <Message sx={{ fontSize: "25px" }} />
-            <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
             <FormControl variant="standard" value={fullName}>
               <Select

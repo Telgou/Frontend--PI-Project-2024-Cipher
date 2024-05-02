@@ -4,6 +4,8 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
+import Heart from "../../assets/heart.svg";
+import HeartFilled from "../../assets/heartFilled.svg";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
@@ -14,7 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 
 const PostWidget = ({
+  post,
   postId,
+  socket,
+  user,
   postUserId,
   name,
   description,
@@ -25,6 +30,7 @@ const PostWidget = ({
   comments,
   getPosts
 }) => {
+  const [liked, setLiked] = useState(false);//notif
   const [isComments, setIsComments] = useState(false);
   const [newComment, setNewComment] = useState("");
   const dispatch = useDispatch();
@@ -32,6 +38,14 @@ const PostWidget = ({
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes && likes[loggedInUserId]);
   const likeCount = likes ? Object.keys(likes)?.length : 0;
+
+  const handleNotification = (type) => {
+    type === 1 && setLiked(true);
+    socket.emit("sendNotification", {
+      senderName: user,
+      receiverName: post.username,
+      type,
+    });}
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -123,9 +137,14 @@ const PostWidget = ({
           <FlexBetween gap="0.3rem">
             <IconButton onClick={patchLike}>
               {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
+                <img src={HeartFilled} alt="" className="cardIcon" />
               ) : (
-                <FavoriteBorderOutlined />
+                <img
+                  src={Heart}
+                  alt=""
+                  className="cardIcon"
+                  onClick={() => handleNotification(1)}
+                />
               )}
             </IconButton>
             <Typography>{likeCount}</Typography>
