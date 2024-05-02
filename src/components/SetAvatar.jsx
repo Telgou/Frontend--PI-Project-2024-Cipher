@@ -42,14 +42,17 @@ export default function SetAvatar() {
     fetchData();
   }, [api]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const checkLocalStorage = () => {
       if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
-        navigate("/lo");
+        navigate("/setAvatar");
     };
 
     checkLocalStorage();
-  }, [navigate]);
+  }, [navigate]);*/
+  useEffect(() => {
+    console.log("Local Storage User:", localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
+  }, []);
 
   const setProfilePicture = async () => {
     try {
@@ -59,11 +62,28 @@ export default function SetAvatar() {
         const user = JSON.parse(
           localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
         );
-
-        const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
+        const token = localStorage.getItem('authToken');
+        //console.log("User object:", user); // Add this log
+        console.log("localsotargeeee:",localStorage);
+        console.log("REACT_APP_LOCALHOST_KEY from env:", process.env.REACT_APP_LOCALHOST_KEY);
+        if (!token) {
+          // Handle case where token is not available
+          console.error("Authentication token not found");
+          return;
+        }
+        const userId = user._id;
+        //localStorage.setItem('authToken', token);
+        console.log("token: ", token);
+        const { data } = await axios.post(`${setAvatarRoute}/${userId}`, {
           image: avatars[selectedAvatar],
-        });
-
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}` // Include the authorization token in the headers
+          }
+        }
+      );
+   
         if (data.isSet) {
           user.isAvatarImageSet = true;
           user.avatarImage = data.image;
@@ -78,6 +98,7 @@ export default function SetAvatar() {
             toastOptions
           );
         }
+        //console.log("dataaaa:",data.isSet);
       }
     } catch (error) {
       console.error("Error setting profile picture:", error);

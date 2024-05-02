@@ -16,6 +16,7 @@ import GroupsWidget from "scenes/widgets/GroupsWidget";
 
 const HomePage = () => {
   const [showGroupWidget, setShowGroupWidget] = useState(false);
+  const [filteringObject, setFilteringObject] = useState(null);
   const [showEventWidget, setShowEventsWidget] = useState(false);
   const [showSportsWidget, setShowSportsWidget] = useState(false); // New state
   const handleGroupIconClick = () => {
@@ -41,10 +42,15 @@ const HomePage = () => {
   useEffect(() => {
     //console.log("showGroupWidget:", showGroupWidget);
     //console.log("showSportsWidget:", showSportsWidget);
-  }, [showGroupWidget, showSportsWidget]);
+    console.log("should be here second",filteringObject);
+  }, [showGroupWidget, showSportsWidget,filteringObject]);
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  const { _id, picturePath } = useSelector((state) => state.user);
-
+  const { _id, picturePath ,firstName,lastName } = useSelector((state) => state.user);
+  const handleFilterChange = (filterOptions) => {
+    setFilteringObject(filterOptions);
+    console.log("firstName,lastName",firstName,lastName);
+   
+  };
   return (
     <Box>
       <Navbar 
@@ -70,11 +76,14 @@ const HomePage = () => {
 
           { !showEventWidget && !showGroupWidget && !showEventWidget && <MyPostWidget isprofile={false} />}
 
-          {showSportsWidget && <MyActivityWidget />}
+          {showSportsWidget && <MyActivityWidget onFilterChange={handleFilterChange}/>}
           {showEventWidget && <MyEventWidget />}
           {/* <MyPostWidget picturePath={picturePath} /> */}
           {  !showEventWidget && !showGroupWidget && !showEventWidget && <PostsWidget userId={_id} />}
-          {showSportsWidget && <ActivitysWidget userId={_id} />}
+          {showSportsWidget && filteringObject && <ActivitysWidget userId={_id} picturePath={picturePath} firstname={firstName} lastname={lastName} course={filteringObject.course}
+    onlineMeeting={filteringObject.onlineMeeting}
+    covoiturage={filteringObject.covoiturage}
+    sportActivity={filteringObject.sportActivity} />}
           {showGroupWidget && <GroupsWidget userId={_id} />}
           {showEventWidget && <EventsWidget userId={_id} />}
           

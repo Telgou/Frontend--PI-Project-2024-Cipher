@@ -17,7 +17,7 @@ export default function Chat() {
   useEffect(() => {
     async function fetchData() {
       if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-        navigate("/lo");
+        navigate("/tok");
       } else {
         const user = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY));
         setCurrentUser(user);
