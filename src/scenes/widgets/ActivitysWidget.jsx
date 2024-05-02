@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect ,useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import ActivityWidget from "./ActivityWidget";
 
 const PostsWidget = ({ course, onlineMeeting, covoiturage, sportActivity ,userId, picturePath, firstname, lastname,}) => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts);
+  //const posts = useSelector((state) => state.posts);
+  const [posts,setposts] = useState(undefined)
   const token = useSelector((state) => state.token);
 
   useEffect(() => {
@@ -16,14 +17,15 @@ const PostsWidget = ({ course, onlineMeeting, covoiturage, sportActivity ,userId
       });
       const data = await response.json();
       console.log("firstName,lastName2",firstname,lastname)
-      dispatch(setPosts({ posts: data }));
+      //dispatch(setPosts({ posts: data }));
+      setposts(data)
     };
 
     fetchPosts();
   }, [dispatch, token]);
 
   // Filter posts based on the corresponding properties
-  const filteredPosts = posts.filter((activity) => {
+  const filteredPosts = posts ? posts.filter((activity) =>{
     if (course && activity.course) {
       
       return true;
@@ -39,7 +41,7 @@ const PostsWidget = ({ course, onlineMeeting, covoiturage, sportActivity ,userId
       return true;
     }
     return false;
-  });
+  }): [];
 
   return (
     <>

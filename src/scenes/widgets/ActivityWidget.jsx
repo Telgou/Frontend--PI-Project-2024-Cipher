@@ -96,10 +96,7 @@ const useStyles = makeStyles((theme) => ({
       try {
         const response = await fetch(`http://127.0.0.1:3001/activity/updatePnb/${postId}`, {
           method: "PUT",
-          headers: {
-            Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZGQwMzg1ZTVlMWMwYjgzMmRkZTUxOSIsImlhdCI6MTcwODk4MzI2N30.NtY4W03iAEvVgSo9znvkdOxhTMNBlOSUbYm-Y1-O2x4`,
-            "Content-Type": "application/json",
-          },
+          headers: { Authorization: `Bearer ${token}` }
         });
     
         if (!response.ok) {

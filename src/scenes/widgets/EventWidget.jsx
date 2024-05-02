@@ -11,13 +11,14 @@ Chart.register(...registerables); // register all the components
 
 const hashString = (str) => {
   let hash = 0;
-  for (let i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length; i++) { // This line is causing the error
     const char = str.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
     hash = hash & hash; // Convert to 32bit integer
   }
   return hash;
 };
+
 
 // Définition des traductions pour différentes langues
 const translations = {
