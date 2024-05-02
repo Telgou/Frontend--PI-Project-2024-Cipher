@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import ActivityWidget from "./ActivityWidget";
 
-const PostsWidget = () => {
+const PostsWidget = ({ course, onlineMeeting, covoiturage, sportActivity ,userId, picturePath, firstname, lastname,}) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
@@ -15,38 +15,78 @@ const PostsWidget = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
+      console.log("firstName,lastName2",firstname,lastname)
       dispatch(setPosts({ posts: data }));
-    
     };
 
     fetchPosts();
   }, [dispatch, token]);
 
+  // Filter posts based on the corresponding properties
+  const filteredPosts = posts.filter((activity) => {
+    if (course && activity.course) {
+      
+      return true;
+      
+    }
+    if (onlineMeeting && activity.onlineMeeting) {
+      return true;
+    }
+    if (covoiturage && activity.covoiturage) {
+      return true;
+    }
+    if (sportActivity && activity.sportActivity) {
+      return true;
+    }
+    return false;
+  });
+
   return (
     <>
-      {Array.isArray(posts) &&
-        posts.map((activity) => {
-          const averageRating =
-            Array.isArray(activity.feedback) && activity.feedback.length > 0
-              ? activity.feedback.reduce((sum, feedback) => sum + feedback.rating, 0) /
-                activity.feedback.length
-              : 0;
-            console.log("so the result is",averageRating );
-          return (
-            <ActivityWidget
-              key={activity._id} // Add a unique key prop
-              postId={activity._id}
-              name={activity.activityName}
-              description={activity.activityTime}
-              location={activity.location}
-              picturePath={activity.destination}
-              userPicturePath={activity.numberOfParticipants}
-              likes={activity.startingLocation}
-              comments={activity.comments}
-              averageRating={averageRating}
-            />
-          );
-        })}
+      {filteredPosts.map((activity) => {
+        const averageRating =
+          Array.isArray(activity.feedback) && activity.feedback.length > 0
+            ? activity.feedback.reduce((sum, feedback) => sum + feedback.rating, 0) /
+              activity.feedback.length
+            : 0;
+
+        return (
+          <ActivityWidget
+            key={activity._id}
+            postId={activity._id}
+            userId={userId}
+            firstname={firstname} 
+            lastname={lastname}
+            picturePath={picturePath}
+            activityname={activity.activityName}
+            activityTime={activity.activityTime}
+            numberOfParticipants={activity.numberOfParticipants}
+            comments={activity.comments}
+            course={course}
+            covoiturage={covoiturage}
+            onlineMeeting={onlineMeeting}
+            sportActivity={sportActivity}
+            averageRating={averageRating}
+            startingLocation={activity.startingLocation}
+            destination={activity.destination}
+            availableSeats={activity.availableSeats}
+            driverName={activity.driverName}
+            driverContact={activity.driverContact}
+            courseName={activity.courseName}
+            instructorName={activity.instructorName}
+            courseDuration={activity.courseDuration}
+            locationOrPlatform={activity.locationOrPlatform}
+            meetingTitle={activity.meetingTitle}
+            hostName={activity.hostName}
+            meetingDuration={activity.meetingDuration}
+            meetingLink={activity.meetingLink}
+            meetingAgenda={activity.meetingAgenda}
+            location={activity.location}
+            sportActivityName={activity.sportActivityName}
+            equipmentRequirements={activity.equipmentRequirements}
+          />
+        );
+      })}
     </>
   );
 };

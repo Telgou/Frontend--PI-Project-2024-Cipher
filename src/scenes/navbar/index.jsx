@@ -76,6 +76,7 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
 
   const handleChatRedirect = () => {
     navigate('/chat');
+
   };
 
   return (

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Robot from "../assets/robot.gif";
 export default function Welcome() {
-  const [email, setUserName] = useState("");
+  const [userName, setUserName] = useState("");
   useEffect(() => {
     const storedData = localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY);
     if (storedData) {
       const parsedData = JSON.parse(storedData);
-      if (parsedData.email) {
-        setUserName(parsedData.email);
+      if (parsedData.username) {
+        setUserName(parsedData.username);
       }
     }
   }, []);
@@ -16,7 +16,7 @@ export default function Welcome() {
     <Container>
       <img src={Robot} alt="" />
       <h1>
-        Welcome, <span>{email}!</span>
+        Welcome, <span>{userName}!</span>
       </h1>
       <h3>Please select a chat to Start messaging.</h3>
     </Container>
