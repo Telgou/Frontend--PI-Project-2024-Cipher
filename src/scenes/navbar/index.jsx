@@ -46,7 +46,7 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
   const alt = theme.palette.background.alt;
 
   const handleChatRedirect = () => {
-    navigate('/setAvatar');
+    navigate('/lo');
   };
 
   return (
