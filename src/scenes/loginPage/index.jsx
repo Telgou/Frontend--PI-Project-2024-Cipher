@@ -31,7 +31,7 @@ const LoginPage = () => {
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
           {tok.startsWith("tok=pass") ? "Please enter your new password" : "Welcome to UniSocialize, the Social Media for University professors !"}
         </Typography>
-        {tok.startsWith("tok=pass") ? <PassresetForm /> : <Form />}
+        {tok.startsWith("tok=pass") ? <PassresetForm /> :  <Form />}
       </Box>
     </Box>
   );

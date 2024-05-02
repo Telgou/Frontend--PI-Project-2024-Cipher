@@ -80,10 +80,10 @@ const Form = () => {
     //onSubmitProps.resetForm();
     //console.log(savedUser.error)
     console.log(savedUserResponse.status)
-    if (savedUserResponse.status === 403) {
+    if (savedUserResponse.status == 403) {
       showNotification('info', savedUser.error)
     }// eslint-disable-next-line
-    if (savedUser.error == 'E11000 duplicate key error collection: snu.users index: email_1 dup key: { : \"ahmed.gamgami@esprit.tn\" }') {
+    if (savedUser.errorstartsWith('E11000 duplicate key error collection: snu.users index: email_1 dup key:')) {
       console.log("duplicate email") // eslint-disable-next-line
       showNotification('warning', 'There is already an account with the associated email')
 
@@ -96,16 +96,23 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
+    const token = tok.split('=log')[1];
+    const bodyValues = { ...values };
+    console.log(token)
+    if (token !== undefined) {
+      bodyValues.logtoken = token;
+    }
+
     const loggedInResponse = await fetch("http://127.0.0.1:3001/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify({ ...values, logtoken: tok.split('=log')[1] }),
     });
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
     console.log(loggedIn);
     if (loggedIn) {
-	const userId = loggedIn.user._id;
+      const userId = loggedIn.user._id;
       dispatch(
         setUserImagePath(loggedIn.user.picturePath)
       );
@@ -117,7 +124,7 @@ const Form = () => {
         })
       );
       navigate("/home");
-	 socket.emit('login', userId);
+      socket.emit('login', userId);
     }
   };
 
@@ -126,6 +133,10 @@ const Form = () => {
     if (isRegister) await register(values, onSubmitProps);
   };
 
+  const [button, setbutton] = useState(true);
+  const captchaVerify = () => {
+    setbutton(false);
+  };
   return (
     <Formik
       onSubmit={handleFormSubmit}
@@ -257,7 +268,7 @@ const Form = () => {
           </Box>
 
           {/* BUTTONS */}
-          <Box style={{marginTop:'2rem'}}>
+          <Box style={{ marginTop: '2rem' }}>
             <HCaptcha
               sitekey={'f7bca377-9e98-4dce-8ff6-1a3949121602' || process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY}
               onVerify={captchaVerify}
@@ -272,7 +283,7 @@ const Form = () => {
                 color: palette.background.alt,
                 "&:hover": { color: palette.primary.main },
               }}
-              disabled={button}
+            //disabled={button}
             >
               {isLogin ? "LOGIN" : "REGISTER"}
             </Button>

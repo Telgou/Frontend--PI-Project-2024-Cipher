@@ -50,7 +50,7 @@ const Form = () => {
   const pregister = async (values, onSubmitProps) => {
     const formData = new FormData();
     formData.append("email", values.email);
-    console.log('FormData:', formData);
+    //console.log('FormData:', formData);
     const savedUserResponse = await fetch(
       "http://127.0.0.1:3001/auth/pregister",
       {
@@ -62,15 +62,20 @@ const Form = () => {
       }
     );
     const savedUser = await savedUserResponse.json();
-    console.log('it must end with \"@esprit"' in savedUser.error)
+    console.log(savedUser.error);
+    console.log(savedUser.error.startsWith('PreUser validation failed: email:'))
     //onSubmitProps.resetForm();
 
-
-    if ('it must end with \"@esprit"' in savedUser.error) {
-      showNotification('info', "You need to register using an @esprit.")
+    // eslint-disable-next-line
+    if (savedUser.error.startsWith('E11000 duplicate key error collection:')) {
+      showNotification('warning', 'There is already an account with the associated email')
     }
 
-    if (savedUser) {
+    if (savedUser.error.startsWith('PreUser validation failed: email:')) {
+      showNotification('info', "You need to register using an @esprit.tn email")
+    }
+
+    if (savedUser.msg) {
       setPageType("login");
     }
   };
@@ -83,8 +88,10 @@ const Form = () => {
     });
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
-    console.log(loggedIn);
-    if (loggedIn) {
+    //console.log(loggedIn);
+    if (loggedIn.msg == "New connection location detected, please check your email to continue logging in")
+      showNotification('info', 'New connection location detected, please check your email to continue logging in')
+    if (loggedInResponse.status == 200) {
       dispatch(
         setUserImagePath(loggedIn.user.picturePath)
       );
@@ -181,7 +188,7 @@ const Form = () => {
           </Box>
 
           {/* BUTTONS */}
-          <Box style={{marginTop:'2rem'}}>
+          <Box style={{ marginTop: '2rem' }}>
             <HCaptcha
               sitekey={'f7bca377-9e98-4dce-8ff6-1a3949121602' || process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY}
               onVerify={captchaVerify}
@@ -196,7 +203,7 @@ const Form = () => {
                 color: palette.background.alt,
                 "&:hover": { color: palette.primary.main },
               }}
-              //disabled={button}
+            //disabled={button}
             >
               {isLogin ? "LOGIN" : isforgotpassword ? "RESET" : "PREREGISTER"}
             </Button>

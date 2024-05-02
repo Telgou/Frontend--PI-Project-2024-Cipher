@@ -10,10 +10,10 @@ import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useDispatch } from "react-redux";
-import { setUserImagePath,setfullname, setuser } from "state";
+import { setUserImagePath, setuser } from "state";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import Dropzone from "react-dropzone";
 
@@ -21,14 +21,11 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
 
   const [user, setUser] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
-  const [allOpen, setallOpen] = useState(false);
   const [singular, setSingular] = useState(undefined);
   const [file, setFile] = useState(null);
   const { palette } = useTheme();
-  const [isProfile] = useState(isprofile.isprofile);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userimagepath = useSelector((state) => state.userImagePath);
   const token = useSelector((state) => state.token);
   const ouruser = useSelector((state) => state.user);
   const dark = palette.neutral.dark;
@@ -42,7 +39,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
     });
     const data = await response.json();
     await setUser(data);
-    
+
     //console.log(user);
   };
 
@@ -80,7 +77,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
   const UpdateUserInfo = async () => {
     try {
       const formData = new FormData();
-      if (singular == undefined) {
+      if (singular === undefined) {
         formData.append("firstName", document.getElementById("firstName").value);
         formData.append("lastName", document.getElementById("lastName").value);
         formData.append("occupation", document.getElementById("occupation").value);
@@ -93,9 +90,9 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
           formData.append("picture", file);
         }
       }
-      if (singular == 'github' || singular == undefined) formData.append("github", document.getElementById("github").value);
-      if (singular == 'linkedin' || singular == undefined) formData.append("linkedin", document.getElementById("linkedin").value);
-      if (singular == 'twitter' || singular == undefined) formData.append("twitter", document.getElementById("twitter").value);
+      if (singular === 'github' || singular === undefined) formData.append("github", document.getElementById("github").value);
+      if (singular === 'linkedin' || singular === undefined) formData.append("linkedin", document.getElementById("linkedin").value);
+      if (singular === 'twitter' || singular === undefined) formData.append("twitter", document.getElementById("twitter").value);
 
       //console.log("user", user);
       //console.log("formdata", formData);
@@ -156,7 +153,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
         onClick={() => navigate(`/profile/${userId}`)}
       >
         <FlexBetween gap="1rem">
-          <UserImage image={picturePath} />
+          <UserImage image={user.picturePath} />
           <Box>
             <Typography
               variant="h4"
@@ -222,7 +219,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
 
         {user.github && <FlexBetween gap="1rem">
 
-          <a href={'https://github.com/' + user.github} style={{textDecoration:'none'}} target="_blank" rel="noopener noreferrer" >
+          <a href={'https://github.com/' + user.github} style={{ textDecoration: 'none' }} target="_blank" rel="noopener noreferrer" >
             <FlexBetween gap="1rem">
               <img src="../assets/github.png" alt="github" style={{ objectFit: 'contain' }} />
               <Box>
@@ -233,15 +230,15 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
               </Box>
             </FlexBetween>
           </a>
-          <EditOutlined sx={{ color: main }} style={{ cursor: 'pointer' }} onClick={() => {
+          {ouruser._id == userId && <EditOutlined sx={{ color: main }} style={{ cursor: 'pointer' }} onClick={() => {
             setSingular('github');
             openEditModal("github")
-          }} />
+          }} />}
         </FlexBetween>}
 
         {user.twitter &&
           <FlexBetween gap="1rem" mb="0.5rem">
-            <a href={'https://twitter.com/' + user.twitter} style={{textDecoration:'none'}} target="_blank" rel="noopener noreferrer" >
+            <a href={'https://twitter.com/' + user.twitter} style={{ textDecoration: 'none' }} target="_blank" rel="noopener noreferrer" >
               <FlexBetween gap="1rem">
                 <img src="../assets/twitter.png" alt="twitter" />
                 <Box>
@@ -260,7 +257,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
 
 
         {user.linkedin && <FlexBetween gap="1rem">
-          <a href={'https://linkedin.com/in/' + user.linkedin} style={{textDecoration:'none'}} target="_blank" rel="noopener noreferrer" >
+          <a href={'https://linkedin.com/in/' + user.linkedin} style={{ textDecoration: 'none' }} target="_blank" rel="noopener noreferrer" >
             <FlexBetween gap="1rem">
               <img src="../assets/linkedin.png" alt="linkedin" />
               <Box>

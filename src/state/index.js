@@ -25,8 +25,10 @@ export const authSlice = createSlice({
       const newUser = action.payload;
       console.log(state.user)
       if (newUser) {
+        let friends = state.user.friends;
         state.user = action.payload;
-        //console.log(state.user)
+        state.user.friends = friends;
+        console.log(state.user)
         state.fullName = `${newUser.firstName} ${newUser.lastName}`;
       } else {
         console.error("Invalid user payload");
