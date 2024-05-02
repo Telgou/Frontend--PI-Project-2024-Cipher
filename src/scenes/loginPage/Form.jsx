@@ -114,7 +114,6 @@ const Form = () => {
       localStorage.setItem(
         'chat-app-current-user',
         JSON.stringify(loggedIn.user)
-
       );
       localStorage.setItem('authToken', loggedIn.token);
    console.log("storageeeeee:",localStorage);
@@ -128,7 +127,6 @@ const Form = () => {
       // Navigate to the home page
       navigate("/home");
 
-
       // Emit login event to socket
       const userId = loggedIn.user._id;
       socket.emit('login', userId);
@@ -137,23 +135,14 @@ const Form = () => {
       console.error("Login failed:", loggedIn.message);
   }
 };
-
-const handleFormSubmit = async (values, onSubmitProps) => {
-  if (isLogin) await login(values, onSubmitProps);
-  if (isRegister) {
-    await register(values, onSubmitProps);
-    // Retrieve the registered user data from local storage
-    const userData = JSON.parse(localStorage.getItem('chat-app-current-user'));
-    // Check if userData is not null before setting it in local storage
-    if (userData) {
-      localStorage.setItem('chat-app-current-user', JSON.stringify(userData));
+      navigate("/home");
+	 socket.emit('login', userId);
     }
-  }
-};
+  };
 
-  const [button, setbutton] = useState(true);
-  const captchaVerify = () => {
-    setbutton(false);
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    if (isLogin) await login(values, onSubmitProps);
+    if (isRegister) await register(values, onSubmitProps);
   };
 
   return (
