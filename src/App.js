@@ -7,10 +7,11 @@ import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import { NotificationContainer } from "react-notifications";
 import Chat from "./scenes/chat/Chat";
-import Login from "./scenes/Login/Login";
-import Register from "./scenes/Register/Register";
+//import Login from "./scenes/Login/Login";
+//import Register from "./scenes/Register/Register";
 import SetAvatar from "./components/SetAvatar";
 import ErrorBoundary from "./components/ErrorBoundary";
+import ChatGPT from "components/chatGPT";
 
 // Lazy load your components
 const HomePage = React.lazy(() => import("scenes/homePage"));
@@ -33,8 +34,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Pregister />} />
               <Route path="/:tok" element={<LoginPage />} />
-              <Route path="/register" element={<Register />} />
-          <Route path="/lo" element={<Login/>} />
               <Route
                 path="/home"
                 element={isAuth ? <HomePage /> : <Navigate to="/" />}
@@ -44,6 +43,7 @@ function App() {
                 element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
               />
             <Route path="/chat" element={isAuth ? <Chat /> : <Navigate to="/loginn" />} />
+            <Route path="/chatGPT" element={<ChatGPT />} />
             </Routes>
           </Suspense>
         </ThemeProvider>

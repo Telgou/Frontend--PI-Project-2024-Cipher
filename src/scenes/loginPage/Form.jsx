@@ -92,6 +92,10 @@ const Form = () => {
       console.log(savedUserResponse.status, "201")
       showNotification('success', 'You have registered successfully')
       setPageType("login");
+      localStorage.setItem(
+        'chat-app-current-user',
+        JSON.stringify(savedUser.user)
+      );
     }
   };
 
@@ -104,22 +108,35 @@ const Form = () => {
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
     console.log(loggedIn);
-    if (loggedIn) {
-	const userId = loggedIn.user._id;
-      dispatch(
-        setUserImagePath(loggedIn.user.picturePath)
-      );
+    if (loggedIn && loggedIn.token) {  // Ensure loggedIn has the token as part of the validation
+      // Save user data to localStorage
+      console.log("infooooo:",loggedIn);
+      localStorage.setItem(
+        'chat-app-current-user',
+        JSON.stringify(loggedIn.user)
 
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
       );
+      localStorage.setItem('authToken', loggedIn.token);
+   console.log("storageeeeee:",localStorage);
+      // Dispatch actions to update Redux state
+      dispatch(setUserImagePath(loggedIn.user.picturePath));
+      dispatch(setLogin({
+        user: loggedIn.user,
+        token: loggedIn.token,
+      }));
+
+      // Navigate to the home page
       navigate("/home");
-	 socket.emit('login', userId);
-    }
-  };
+
+
+      // Emit login event to socket
+      const userId = loggedIn.user._id;
+      socket.emit('login', userId);
+  } else {
+      // Handle login failure (e.g., display an error message)
+      console.error("Login failed:", loggedIn.message);
+  }
+};
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
