@@ -80,9 +80,9 @@ const PostWidget = ({
       });
 
       if (response.ok) {
+        getPosts();
         setNewComment("");
         console.log("Comment added successfully");
-        getPosts();
       } else {
         console.error("Error adding comment:", response.status);
       }

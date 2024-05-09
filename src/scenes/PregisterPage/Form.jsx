@@ -62,20 +62,22 @@ const Form = () => {
       }
     );
     const savedUser = await savedUserResponse.json();
-    console.log(savedUser.error);
-    console.log(savedUser.error.startsWith('PreUser validation failed: email:'))
+    //console.log(savedUser.error);
+    //console.log(savedUser.error.startsWith('PreUser validation failed: email:'))
     //onSubmitProps.resetForm();
+    console.log(savedUserResponse.status == 201);
 
     // eslint-disable-next-line
-    if (savedUser.error.startsWith('E11000 duplicate key error collection:')) {
-      showNotification('warning', 'There is already an account with the associated email')
+    if (savedUser.error?.startsWith('E11000 duplicate key error collection:')) {
+      showNotification('warning', 'There is already an account with the associated email');
     }
 
-    if (savedUser.error.startsWith('PreUser validation failed: email:')) {
-      showNotification('info', "You need to register using an @esprit.tn email")
+    if (savedUser.error?.startsWith('PreUser validation failed: email:')) {
+      showNotification('info', "You need to register using an @esprit.tn email");
     }
 
-    if (savedUser.msg) {
+    if (savedUserResponse.status == 201) {
+      showNotification('success', "Please Check Your Email");
       setPageType("login");
     }
   };
@@ -90,7 +92,11 @@ const Form = () => {
     onSubmitProps.resetForm();
     //console.log(loggedIn);
     if (loggedIn.msg == "New connection location detected, please check your email to continue logging in")
-      showNotification('info', 'New connection location detected, please check your email to continue logging in')
+      showNotification('info', 'New connection location detected, please check your email to continue logging in');
+    if (loggedInResponse.status == 400) {
+      showNotification('info', 'Please Try again');
+    }// eslint-disable-next-line
+
     if (loggedInResponse.status == 200) {
       dispatch(
         setUserImagePath(loggedIn.user.picturePath)
