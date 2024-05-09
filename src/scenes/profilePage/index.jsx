@@ -21,7 +21,7 @@ const ProfilePage = () => {
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
     const getUser = async () => {
-        const response = await fetch(`http://localhost:3001/users/${userId}`, {
+        const response = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/users/${userId}`, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
         });
@@ -32,7 +32,7 @@ const ProfilePage = () => {
 
     const getUserPosts = async () => {
         const response = await fetch(
-            `http://127.0.0.1:3001/posts/${userId}`,
+            process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/posts/${userId}`,
             {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` },

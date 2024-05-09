@@ -36,6 +36,7 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
+console.log(process.env.REACT_APP_API);
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
@@ -49,10 +50,11 @@ const Form = () => {
 
   const pregister = async (values, onSubmitProps) => {
     const formData = new FormData();
+
     formData.append("email", values.email);
     //console.log('FormData:', formData);
     const savedUserResponse = await fetch(
-      "http://127.0.0.1:3001/auth/pregister",
+      (process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app")+"/auth/pregister",
       {
         method: "POST",
         headers: {
@@ -62,26 +64,28 @@ const Form = () => {
       }
     );
     const savedUser = await savedUserResponse.json();
-    console.log(savedUser.error);
-    console.log(savedUser.error.startsWith('PreUser validation failed: email:'))
+    //console.log(savedUser.error);
+    //console.log(savedUser.error.startsWith('PreUser validation failed: email:'))
     //onSubmitProps.resetForm();
+    console.log(savedUserResponse.status == 201);
 
     // eslint-disable-next-line
-    if (savedUser.error.startsWith('E11000 duplicate key error collection:')) {
-      showNotification('warning', 'There is already an account with the associated email')
+    if (savedUser.error?.startsWith('E11000 duplicate key error collection:')) {
+      showNotification('warning', 'There is already an account with the associated email');
     }
 
-    if (savedUser.error.startsWith('PreUser validation failed: email:')) {
-      showNotification('info', "You need to register using an @esprit.tn email")
+    if (savedUser.error?.startsWith('PreUser validation failed: email:')) {
+      showNotification('info', "You need to register using an @esprit.tn email");
     }
 
-    if (savedUser.msg) {
+    if (savedUserResponse.status == 201) {
+      showNotification('success', "Please Check Your Email");
       setPageType("login");
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://127.0.0.1:3001/auth/login", {
+    const loggedInResponse = await fetch((process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app")+"/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -90,7 +94,11 @@ const Form = () => {
     onSubmitProps.resetForm();
     //console.log(loggedIn);
     if (loggedIn.msg == "New connection location detected, please check your email to continue logging in")
-      showNotification('info', 'New connection location detected, please check your email to continue logging in')
+      showNotification('info', 'New connection location detected, please check your email to continue logging in');
+    if (loggedInResponse.status == 400) {
+      showNotification('info', 'Please Try again');
+    }// eslint-disable-next-line
+
     if (loggedInResponse.status == 200) {
       dispatch(
         setUserImagePath(loggedIn.user.picturePath)
@@ -107,7 +115,7 @@ const Form = () => {
   };
 
   const forgotpassword = async (values, onSubmitProps) => {
-    const ForgotResponse = await fetch("http://127.0.0.1:3001/auth/forgotpass", {
+    const ForgotResponse = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/auth/forgotpass", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

@@ -10,15 +10,20 @@ import { Chart, LinearScale, CategoryScale ,registerables} from 'chart.js';
 Chart.register(...registerables); // register all the components
 
 const hashString = (str) => {
+  if (typeof str !== 'string' || str === undefined) {
+    return 0; // or any other appropriate value
+  }
+
   let hash = 0;
-  for (let i = 0; i < str.length; i++) { // This line is causing the error
+  for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
     hash = hash & hash; // Convert to 32bit integer
   }
+
   return hash;
 };
-
+  
 
 // Définition des traductions pour différentes langues
 const translations = {

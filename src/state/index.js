@@ -72,9 +72,13 @@ export const authSlice = createSlice({
     setUserImagePath: (state, action) => {
       state.userImagePath = action.payload;
     },
+    deletePost: (state, action) => {
+      state.posts = state.posts.filter(post => post._id !== action.payload.postId);
+      state.myPosts = state.myPosts.filter(post => post._id !== action.payload.postId);
+    },
   },
 });
 
-export const { setMode, setLogin, setfullname, setuser, setLogout, setFriends, setPosts, setPost, setMyPosts, setUserImagePath } =
+export const { setMode, setLogin, setfullname, setuser, setLogout, setFriends, setPosts, setPost, setMyPosts, setUserImagePath, deletePost } =
   authSlice.actions;
 export default authSlice.reducer;

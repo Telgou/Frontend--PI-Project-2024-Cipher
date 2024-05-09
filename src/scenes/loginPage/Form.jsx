@@ -49,7 +49,7 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
-const socket = io('http://localhost:8082');
+//const socket = io('https://localhost:8082');
 const Form = () => {
   const { tok } = useParams();
   const [pageType, setPageType] = useState("login");
@@ -70,7 +70,7 @@ const Form = () => {
     formData.append("tok", tok.split('=')[1]);
 
     const savedUserResponse = await fetch(
-      "http://127.0.0.1:3001/auth/register",
+      process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/auth/register",
       {
         method: "POST",
         body: formData,
@@ -79,18 +79,27 @@ const Form = () => {
     const savedUser = await savedUserResponse.json();
     //onSubmitProps.resetForm();
     //console.log(savedUser.error)
-    console.log(savedUserResponse.status)
+    console.log(savedUserResponse.status);
     if (savedUserResponse.status == 403) {
-      showNotification('info', savedUser.error)
+      showNotification('info', savedUser.error);
     }// eslint-disable-next-line
-    if (savedUser.errorstartsWith('E11000 duplicate key error collection: snu.users index: email_1 dup key:')) {
-      console.log("duplicate email") // eslint-disable-next-line
-      showNotification('warning', 'There is already an account with the associated email')
+    if (savedUserResponse.status == 404) {
+      showNotification('info', savedUser.error);
+    }// eslint-disable-next-line
+    if (savedUserResponse.status == 400) {
+      showNotification('info', 'Please Try again');
+    }// eslint-disable-next-line
+
+    if (savedUser.error?.startsWith('E11000 duplicate key error collection: snu.users index: email_1 dup key:')) {
+      console.log("duplicate email"); // eslint-disable-next-line
+      showNotification('warning', 'There is already an account with the associated email');
 
     }// eslint-disable-next-line
+
+    console.log(savedUserResponse.status);
     if (savedUserResponse.status == 201) {
-      console.log(savedUserResponse.status, "201")
-      showNotification('success', 'You have registered successfully')
+      console.log(savedUserResponse.status, "201");
+      showNotification('success', 'You have registered successfully');
       setPageType("login");
       localStorage.setItem(
         'chat-app-current-user',
@@ -107,48 +116,60 @@ const Form = () => {
       bodyValues.logtoken = token;
     }
 
-    const loggedInResponse = await fetch("http://127.0.0.1:3001/auth/login", {
+    const loggedInResponse = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...values, logtoken: tok.split('=log')[1] }),
     });
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
+
     console.log(loggedIn);
-    if (loggedIn && loggedIn.token) {  // Ensure loggedIn has the token as part of the validation
-      // Save user data to localStorage
-      console.log("infooooo:",loggedIn);
+    if (loggedIn.msg == "New connection location detected, please check your email to continue logging in")
+      showNotification('info', 'New connection location detected, please check your email to continue logging in');
+    if (loggedInResponse.status == 400) {
+      showNotification('info', 'Please Try again');
+    }// eslint-disable-next-line
+
+    if (loggedIn && loggedIn.token) {
+
+      console.log("infooooo:", loggedIn);
       localStorage.setItem(
         'chat-app-current-user',
         JSON.stringify(loggedIn.user)
 
       );
       localStorage.setItem('authToken', loggedIn.token);
-   console.log("storageeeeee:",localStorage);
-      // Dispatch actions to update Redux state
+      console.log("storageeeeee:", localStorage);
+
       dispatch(setUserImagePath(loggedIn.user.picturePath));
       dispatch(setLogin({
         user: loggedIn.user,
         token: loggedIn.token,
       }));
 
-      // Navigate to the home page
       navigate("/home");
 
-
-      // Emit login event to socket
       const userId = loggedIn.user._id;
-      socket.emit('login', userId);
-  } else {
-      // Handle login failure (e.g., display an error message)
+     // socket.emit('login', userId);
+    } else {
       console.error("Login failed:", loggedIn.message);
-  }
-};
+    }
+  };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
-    if (isRegister) await register(values, onSubmitProps);
-  };
+    if (isRegister) {
+      await register(values, onSubmitProps);
+      // Retrieve the registered user data from local storage
+      const userData = JSON.parse(localStorage.getItem('chat-app-current-user'));
+      // Check if userData is not null before setting it in local storage
+      if (userData) {
+        localStorage.setItem('chat-app-current-user', JSON.stringify(userData));
+      }
+    };
+  }
+
   const [button, setbutton] = useState(true);
   const captchaVerify = () => {
     setbutton(false);

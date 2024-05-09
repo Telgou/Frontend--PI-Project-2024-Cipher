@@ -51,7 +51,7 @@ const MyPostWidget = (isprofile) => {
       formData.append("picturePath", image.name);
     }
 
-    /*const response =*/ await fetch(`http://127.0.0.1:3001/addpost`, {
+    /*const response =*/ await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app` + `/addpost`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -59,10 +59,10 @@ const MyPostWidget = (isprofile) => {
 
     const userid = new FormData();
     userid.append("userId", _id);
-    console.log(isProfile, isProfile==true)
-    const url = isProfile===true ? `http://127.0.0.1:3001/posts/${_id}` : 'http://127.0.0.1:3001/posts';
+    console.log(isProfile, isProfile == true)
+    const url = isProfile === true ? process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app` + `/posts/${_id}` : 'https://backend-pi-project-2024-cipher-production.up.railway.app/posts';
     const resposts = await fetch(url, {
-      method: "GET",  
+      method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     const posts = await resposts.json();
@@ -182,6 +182,8 @@ const MyPostWidget = (isprofile) => {
           POST
         </Button>
       </FlexBetween>
+
+
     </WidgetWrapper>
   );
 };

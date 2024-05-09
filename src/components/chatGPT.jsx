@@ -21,7 +21,7 @@ export default function ChatGPT() {
 
     setMessage("");
 
-    fetch("http://localhost:8000/chatGPT", {
+    fetch("https://localhost:8000/chatGPT", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
