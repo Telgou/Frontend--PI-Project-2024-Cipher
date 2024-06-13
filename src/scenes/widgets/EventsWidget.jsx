@@ -8,64 +8,43 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
 
-  const getPosts = async () => {
-    const response = await fetch("http://127.0.0.1:3001/posts", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    dispatch(setPosts({ posts: data }));
-  };
-
-  const getUserPosts = async () => {
-    const response = await fetch(
-      `http://127.0.0.1:3001/posts/${userId}/posts`,
-      {
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await fetch("http://localhost:3001/events/getEvents", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    const data = await response.json();
-    dispatch(setPosts({ posts: data }));
-  };
+      });
+      const data = await response.json();
+      dispatch(setPosts({ posts: data }));
+    console.log("data",data);
+    };
 
-  useEffect(() => {
-    if (isProfile) {
-      getUserPosts();
-    } else {
-      getPosts();
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    fetchPosts();
+  }, [dispatch, token]);
+
+
+
 
   return (
     <>
-      {Array.isArray(posts) && posts.map(
-        ({
-          _id,
-          userId,
-          firstName,
-          lastName,
-          description,
-          location,
-          picturePath,
-          userPicturePath,
-          likes,
-          comments,
-        }) => (
-          <EventWidget
-            key={_id}
-            postId={_id}
-            postUserId={userId}
-            name={`${firstName} ${lastName}`}
-            description={description}
-            location={location}
-            picturePath={picturePath}
-            userPicturePath={userPicturePath}
-            likes={likes}
-            comments={comments}
-          />
-        )
-      )}
+      {Array.isArray(posts) &&
+        posts.map((event) => {
+          
+          return (
+            <EventWidget
+              key={event._id} // Add a unique key prop
+              postId={event._id}
+              name={event.titre}
+              description={event.description}
+              location={event.lieu}
+              picturePath={event.organisateur}
+              userPicturePath={event.dateDebut}
+              likes={event.dateFin}
+              comments={event.comments}
+          
+            />
+          );
+        })}
     </>
   );
 };

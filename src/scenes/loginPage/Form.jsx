@@ -1,4 +1,6 @@
 import { useState } from "react";
+import io from 'socket.io-client';
+
 import {
   Box,
   Button,
@@ -45,7 +47,7 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
-
+const socket = io('http://localhost:8082'); 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
@@ -87,6 +89,7 @@ const Form = () => {
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
     if (loggedIn) {
+      const userId = loggedIn.user._id;
       dispatch(
         setLogin({
           user: loggedIn.user,
@@ -94,6 +97,7 @@ const Form = () => {
         })
       );
       navigate("/home");
+      socket.emit('login', userId);
     }
   };
 

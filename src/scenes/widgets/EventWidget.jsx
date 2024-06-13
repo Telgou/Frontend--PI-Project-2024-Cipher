@@ -55,9 +55,31 @@ import {
           subtitle={location}
           userPicturePath={userPicturePath}
         />
+   
         <Typography color={main} sx={{ mt: "1rem" }}>
-          {description}
-        </Typography>
+  titre: {description}
+</Typography>
+<Typography color={main} sx={{ mt: "1rem" }}>
+description: 
+</Typography>
+<Typography color={main}>
+  lieu: {location}
+</Typography>
+{picturePath && (
+  <Typography color={main}>
+     organisateur: {picturePath}
+  </Typography>
+)}
+{userPicturePath && (
+  <Typography color={main}>
+    dateDebut: {userPicturePath}
+  </Typography>
+)}
+{likes && (
+  <Typography color={main}>
+     dateFin: {likes}
+  </Typography>
+)}
         {picturePath && (
           <img
             width="100%"
@@ -67,6 +89,7 @@ import {
             src={`http://127.0.0.1:3001/assets/${picturePath}`}
           />
         )}
+          
         <FlexBetween mt="0.25rem">
           <FlexBetween gap="1rem">
             <FlexBetween gap="0.3rem">
@@ -77,17 +100,18 @@ import {
                   <FavoriteBorderOutlined />
                 )}
               </IconButton>
+    
               <Typography>{likeCount}</Typography>
             </FlexBetween>
-  
+           
             <FlexBetween gap="0.3rem">
               <IconButton onClick={() => setIsComments(!isComments)}>
                 <ChatBubbleOutlineOutlined />
               </IconButton>
-              <Typography>{comments.length}</Typography>
+              {/* <Typography>{comments.length}</Typography> */}
             </FlexBetween>
           </FlexBetween>
-  
+       
           <IconButton>
             <ShareOutlined />
           </IconButton>
@@ -102,9 +126,12 @@ import {
                 </Typography>
               </Box>
             ))}
+           
             <Divider />
+            
           </Box>
         )}
+        
       </WidgetWrapper>
     );
   };

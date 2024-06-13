@@ -55,9 +55,11 @@ const PostWidget = ({
         subtitle={location}
         userPicturePath={userPicturePath}
       />
+      <div>Hi1</div>
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
+      <div>Hi2</div>
       {picturePath && (
         <img
           width="100%"
@@ -66,6 +68,7 @@ const PostWidget = ({
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
           src={`http://127.0.0.1:3001/assets/${picturePath}`}
         />
+        
       )}
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
@@ -77,6 +80,7 @@ const PostWidget = ({
                 <FavoriteBorderOutlined />
               )}
             </IconButton>
+            <div>Hi4</div>
             <Typography>{likeCount}</Typography>
           </FlexBetween>
 
@@ -84,12 +88,14 @@ const PostWidget = ({
             <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
-            <Typography>{comments.length}</Typography>
+            <div>Hi5</div>
+            {/* <Typography>{comments.length}</Typography> */}
           </FlexBetween>
         </FlexBetween>
 
         <IconButton>
           <ShareOutlined />
+          <div>Hi6</div>
         </IconButton>
       </FlexBetween>
       {isComments && (
@@ -100,6 +106,7 @@ const PostWidget = ({
               <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
                 {comment}
               </Typography>
+              <div>Hi7</div>
             </Box>
           ))}
           <Divider />

@@ -21,12 +21,11 @@ import {
   import Dropzone from "react-dropzone";
   import UserImage from "components/UserImage";
   import WidgetWrapper from "components/WidgetWrapper";
-  import { useState, useEffect } from "react";
+  import { useState } from "react";
   import { useDispatch, useSelector } from "react-redux";
   import { setPosts } from "state";
-  import WebRTCVideoCall from "components/WebRTCVideoCall";
   
-  const MyPostWidget = ({ picturePath,onFilterChange }) => {
+  const MyPostWidget = ({ picturePath }) => {
     const dispatch = useDispatch();
     const [isImage, setIsImage] = useState(false);
     const [image, setImage] = useState(null);
@@ -37,13 +36,7 @@ import {
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
     const mediumMain = palette.neutral.mediumMain;
     const medium = palette.neutral.medium;
-    const [filterOptions, setFilterOptions] = useState({
-      course: true,
-      onlineMeeting: true,
-      covoiturage: true,
-      sportActivity: true
-    });
-
+  
     const handlePost = async () => {
       const formData = new FormData();
       formData.append("userId", _id);
@@ -52,7 +45,6 @@ import {
         formData.append("picture", image);
         formData.append("picturePath", image.name);
       }
-     
   
       const response = await fetch(`http://127.0.0.1:3001/posts`, {
         method: "POST",
@@ -65,64 +57,10 @@ import {
       setPost("");
     };
   
-    const handleCheckboxChange = (event) => {
-      const { name, checked } = event.target;
-      setFilterOptions((prevOptions) => ({
-        course: name === "course" ? true : false,
-        onlineMeeting: name === "onlineMeeting" ? true : false,
-        covoiturage: name === "covoiturage" ? true : false,
-        sportActivity: name === "sportActivity" ? true : false,
-      }));
-      
-      onFilterChange({ [name]: true });
-      console.log("should be here first", name,"and checked : " ,checked, "and filteroptions ", filterOptions);
-    };
-    useEffect(() => {
-      console.log("on the first too", filterOptions);
-    }, [filterOptions]);
-    
     return (
       <WidgetWrapper>
-        
-        <div>
-        <label>
-          <input
-            type="checkbox"
-            name="course"
-            checked={filterOptions.course}
-            onChange={handleCheckboxChange}
-          />
-          Courses
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="onlineMeeting"
-            checked={filterOptions.onlineMeeting}
-            onChange={handleCheckboxChange}
-          />
-          Online Meetings
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="covoiturage"
-            checked={filterOptions.covoiturage}
-            onChange={handleCheckboxChange}
-          />
-          Carpooling
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="sportActivity"
-            checked={filterOptions.sportActivity}
-            onChange={handleCheckboxChange}
-          />
-          Sport Activities
-        </label>
-      </div>
-        {/* <FlexBetween gap="1.5rem">
+        <div>HElloooooooooooooooo</div>
+        <FlexBetween gap="1.5rem">
           <UserImage image={picturePath} />
           <InputBase
             placeholder="What's on your mind..."
@@ -228,7 +166,7 @@ import {
           >
             POST
           </Button>
-        </FlexBetween> */}
+        </FlexBetween>
       </WidgetWrapper>
     );
   };
