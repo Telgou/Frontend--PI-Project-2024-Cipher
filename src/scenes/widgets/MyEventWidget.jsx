@@ -45,7 +45,7 @@ import {
         formData.append("picturePath", image.name);
       }
   
-      const response = await fetch(`http://127.0.0.1:3001/posts`, {
+      const response = await fetch(`http://backend-pi-project-2024-cipher.onrender.com/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

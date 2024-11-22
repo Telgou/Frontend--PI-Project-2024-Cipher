@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 
     const handleParticipate = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:3001/activity/updatePnb/${postId}`, {
+        const response = await fetch(`http://backend-pi-project-2024-cipher.onrender.com/activity/updatePnb/${postId}`, {
           method: "PUT",
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -186,7 +186,7 @@ const useStyles = makeStyles((theme) => ({
             height="auto"
             alt="post"
             style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-            src={`http://127.0.0.1:3001/assets/${picturePath}`}
+            src={`http://backend-pi-project-2024-cipher.onrender.com/assets/${picturePath}`}
           />
         )} */}
             

@@ -32,7 +32,7 @@ const ProfilePage = () => {
 
     const getUserPosts = async () => {
         const response = await fetch(
-            `http://127.0.0.1:3001/posts/${userId}`,
+            `http://backend-pi-project-2024-cipher.onrender.com/posts/${userId}`,
             {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` },

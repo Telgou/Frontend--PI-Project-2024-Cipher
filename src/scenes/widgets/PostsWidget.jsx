@@ -12,7 +12,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const { ouruserid } = useSelector((state) => state.user);
 
   const getPosts = async () => {
-    const response = await fetch("http://127.0.0.1:3001/posts", {
+    const response = await fetch("http://backend-pi-project-2024-cipher.onrender.com/posts", {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -22,7 +22,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getUserPosts = async () => {
     const response = await fetch(
-      `http://127.0.0.1:3001/posts/${userId}`,
+      `http://backend-pi-project-2024-cipher.onrender.com/posts/${userId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

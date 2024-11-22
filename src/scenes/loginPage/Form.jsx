@@ -70,7 +70,7 @@ const Form = () => {
     formData.append("tok", tok.split('=')[1]);
 
     const savedUserResponse = await fetch(
-      "http://127.0.0.1:3001/auth/register",
+      "http://backend-pi-project-2024-cipher.onrender.com/auth/register",
       {
         method: "POST",
         body: formData,
@@ -116,7 +116,7 @@ const Form = () => {
       bodyValues.logtoken = token;
     }
 
-    const loggedInResponse = await fetch("http://127.0.0.1:3001/auth/login", {
+    const loggedInResponse = await fetch("http://backend-pi-project-2024-cipher.onrender.com/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...values, logtoken: tok.split('=log')[1] }),
