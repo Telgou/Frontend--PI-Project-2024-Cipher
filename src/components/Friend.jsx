@@ -24,7 +24,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const patchFriend = async () => {
     const response = await fetch(
-      `https://localhost:3001/users/${_id}/${friendId}`,
+      `https://https://backend-pi-project-2024-cipher.onrender.com/users/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {
