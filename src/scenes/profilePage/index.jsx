@@ -21,7 +21,7 @@ const ProfilePage = () => {
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
     const getUser = async () => {
-        const response = await fetch(`https://https://backend-pi-project-2024-cipher.onrender.com/users/${userId}`, {
+        const response = await fetch(`https://backend-pi-project-2024-cipher.onrender.com/users/${userId}`, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
         });

@@ -11,7 +11,7 @@ const PostsWidget = ({ course, onlineMeeting, covoiturage, sportActivity ,userId
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch("https://https://backend-pi-project-2024-cipher.onrender.com/activity/get", {
+      const response = await fetch("https://backend-pi-project-2024-cipher.onrender.com/activity/get", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });

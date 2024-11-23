@@ -10,7 +10,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch("https://https://backend-pi-project-2024-cipher.onrender.com/events/getEvents", {
+      const response = await fetch("https://backend-pi-project-2024-cipher.onrender.com/events/getEvents", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
