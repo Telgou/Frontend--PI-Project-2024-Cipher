@@ -8,7 +8,7 @@ const UserImage = ({ image, size = "60px" }) => {
         width={size}
         height={size}
         alt="user"
-        src={`https://backend-pi-project-2024-cipher.onrender.com/assets/${image}`}
+        src={`https://backend-pi-project-2024-cipher-production.up.railway.app/assets/${image}`}
       />
     </Box>
   );

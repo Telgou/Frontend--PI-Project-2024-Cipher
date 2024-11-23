@@ -9,7 +9,7 @@ const StarRating = ({ averageRating, postId }) => {
     try {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Set the default Authorization header
   
-      const response = await axios.post(`https://backend-pi-project-2024-cipher.onrender.com/activity/addActivityFeedback/${postId}`, { rating: value });
+      const response = await axios.post(`https://backend-pi-project-2024-cipher-production.up.railway.app/activity/addActivityFeedback/${postId}`, { rating: value });
       const feedback = response.data.feedback || []; // Ensure feedback array exists
     const averageRating = feedback.length > 0 ? feedback.reduce((sum, item) => sum + item.rating, 0) / feedback.length : 0;
     setRating(averageRating);

@@ -21,7 +21,7 @@ const ProfilePage = () => {
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
     const getUser = async () => {
-        const response = await fetch(`https://backend-pi-project-2024-cipher.onrender.com/users/${userId}`, {
+        const response = await fetch(`https://backend-pi-project-2024-cipher-production.up.railway.app/users/${userId}`, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
         });
@@ -32,7 +32,7 @@ const ProfilePage = () => {
 
     const getUserPosts = async () => {
         const response = await fetch(
-            `https://backend-pi-project-2024-cipher.onrender.com/posts/${userId}`,
+            `https://backend-pi-project-2024-cipher-production.up.railway.app/posts/${userId}`,
             {
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` },
