@@ -100,7 +100,7 @@ const sendOffer = async () => {
 };
 
   // Set up Socket.IO connection to the signaling server
-  const socket = io('http://localhost:8082'); // Replace with your signaling server URL
+  const socket = io('https://localhost:8082'); // Replace with your signaling server URL
 
 
 

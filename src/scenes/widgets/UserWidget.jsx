@@ -33,7 +33,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await fetch(`http://backend-pi-project-2024-cipher.onrender.com/users/${userId}`, {
+    const response = await fetch(`https://backend-pi-project-2024-cipher.onrender.com/users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -96,7 +96,7 @@ const UserWidget = ({ userId, picturePath, getUserPosts, isprofile }) => {
 
       //console.log("user", user);
       //console.log("formdata", formData);
-      const response = await fetch(`http://backend-pi-project-2024-cipher.onrender.com/users/${userId}/update`, {
+      const response = await fetch(`https://backend-pi-project-2024-cipher.onrender.com/users/${userId}/update`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -52,7 +52,7 @@ const Form = () => {
     formData.append("email", values.email);
     //console.log('FormData:', formData);
     const savedUserResponse = await fetch(
-      "http://backend-pi-project-2024-cipher.onrender.com/auth/pregister",
+      "https://backend-pi-project-2024-cipher.onrender.com/auth/pregister",
       {
         method: "POST",
         headers: {
@@ -83,7 +83,7 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://backend-pi-project-2024-cipher.onrender.com/auth/login", {
+    const loggedInResponse = await fetch("https://backend-pi-project-2024-cipher.onrender.com/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -113,7 +113,7 @@ const Form = () => {
   };
 
   const forgotpassword = async (values, onSubmitProps) => {
-    const ForgotResponse = await fetch("http://backend-pi-project-2024-cipher.onrender.com/auth/forgotpass", {
+    const ForgotResponse = await fetch("https://backend-pi-project-2024-cipher.onrender.com/auth/forgotpass", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

@@ -54,7 +54,7 @@ import {
       }
      
   
-      const response = await fetch(`http://backend-pi-project-2024-cipher.onrender.com/posts`, {
+      const response = await fetch(`https://backend-pi-project-2024-cipher.onrender.com/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

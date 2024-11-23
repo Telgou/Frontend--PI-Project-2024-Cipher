@@ -11,7 +11,7 @@ const PostsWidget = () => {
   useEffect(() => {
     const fetchUserGroups  = async () => {
       try {
-      const response = await fetch("http://localhost:3001/groups/group", {
+      const response = await fetch("https://localhost:3001/groups/group", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });

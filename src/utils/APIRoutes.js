@@ -1,4 +1,4 @@
-export const host = "http://backend-pi-project-2024-cipher.onrender.com";
+export const host = "https://backend-pi-project-2024-cipher.onrender.com";
 export const loginRoute = `${host}/auth/login`;
 //export const registerRoute = `${host}/auth/register`;
 export const logoutRoute = `${host}/auth/logout`;

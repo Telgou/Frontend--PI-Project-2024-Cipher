@@ -49,7 +49,7 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
-const socket = io('http://localhost:8082');
+const socket = io('https://localhost:8082');
 const Form = () => {
   const { tok } = useParams();
   const [pageType, setPageType] = useState("login");
@@ -70,7 +70,7 @@ const Form = () => {
     formData.append("tok", tok.split('=')[1]);
 
     const savedUserResponse = await fetch(
-      "http://backend-pi-project-2024-cipher.onrender.com/auth/register",
+      "https://backend-pi-project-2024-cipher.onrender.com/auth/register",
       {
         method: "POST",
         body: formData,
@@ -116,7 +116,7 @@ const Form = () => {
       bodyValues.logtoken = token;
     }
 
-    const loggedInResponse = await fetch("http://backend-pi-project-2024-cipher.onrender.com/auth/login", {
+    const loggedInResponse = await fetch("https://backend-pi-project-2024-cipher.onrender.com/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...values, logtoken: tok.split('=log')[1] }),

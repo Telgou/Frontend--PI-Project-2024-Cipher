@@ -42,7 +42,7 @@ const PassresetForm = () => {
     };
 
     const ResetResponse = await fetch(
-      "http://backend-pi-project-2024-cipher.onrender.com/auth/resetpass",
+      "https://backend-pi-project-2024-cipher.onrender.com/auth/resetpass",
       {
         method: "POST",
         headers: {

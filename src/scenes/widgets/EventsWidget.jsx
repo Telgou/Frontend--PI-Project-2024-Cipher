@@ -10,7 +10,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch("http://localhost:3001/events/getEvents", {
+      const response = await fetch("https://localhost:3001/events/getEvents", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });

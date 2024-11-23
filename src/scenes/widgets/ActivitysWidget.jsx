@@ -11,7 +11,7 @@ const PostsWidget = ({ course, onlineMeeting, covoiturage, sportActivity ,userId
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch("http://localhost:3001/activity/get", {
+      const response = await fetch("https://localhost:3001/activity/get", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });

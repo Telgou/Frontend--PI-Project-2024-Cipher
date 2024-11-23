@@ -13,7 +13,7 @@ const FriendListWidget = ({ userId }) => {
 
   const getFriends = async () => {
     const response = await fetch(
-      `http://backend-pi-project-2024-cipher.onrender.com/users/${userId}/friends`,
+      `https://backend-pi-project-2024-cipher.onrender.com/users/${userId}/friends`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

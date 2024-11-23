@@ -51,7 +51,7 @@ const MyPostWidget = (isprofile) => {
       formData.append("picturePath", image.name);
     }
 
-    /*const response =*/ await fetch(`http://backend-pi-project-2024-cipher.onrender.com/addpost`, {
+    /*const response =*/ await fetch(`https://backend-pi-project-2024-cipher.onrender.com/addpost`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -60,7 +60,7 @@ const MyPostWidget = (isprofile) => {
     const userid = new FormData();
     userid.append("userId", _id);
     console.log(isProfile, isProfile==true)
-    const url = isProfile===true ? `http://backend-pi-project-2024-cipher.onrender.com/posts/${_id}` : 'http://backend-pi-project-2024-cipher.onrender.com/posts';
+    const url = isProfile===true ? `https://backend-pi-project-2024-cipher.onrender.com/posts/${_id}` : 'https://backend-pi-project-2024-cipher.onrender.com/posts';
     const resposts = await fetch(url, {
       method: "GET",  
       headers: { Authorization: `Bearer ${token}` },
