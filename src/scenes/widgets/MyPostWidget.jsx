@@ -73,11 +73,11 @@ const MyPostWidget = (isprofile) => {
     setPost("");
   };
   const handleDelete = async (postId) => {
-    await fetch(`${process.env.api || "https://backend-pi-project-2024-cipher-production.up.railway.app"}/posts/${postId}`, {
+    await fetch(`${process.env.REACT_APP_API || "https://backend-pi-project-2024-cipher-production.up.railway.app"}/posts/${postId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
-
+  }
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">
