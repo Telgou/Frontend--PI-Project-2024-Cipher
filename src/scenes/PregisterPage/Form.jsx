@@ -36,6 +36,7 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
+console.log(process.env.REACT_APP_API);
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
@@ -49,10 +50,11 @@ const Form = () => {
 
   const pregister = async (values, onSubmitProps) => {
     const formData = new FormData();
+
     formData.append("email", values.email);
     //console.log('FormData:', formData);
     const savedUserResponse = await fetch(
-      "https://backend-pi-project-2024-cipher-production.up.railway.app/auth/pregister",
+      (process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app")+"/auth/pregister",
       {
         method: "POST",
         headers: {
@@ -83,7 +85,7 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("https://backend-pi-project-2024-cipher-production.up.railway.app/auth/login", {
+    const loggedInResponse = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -113,7 +115,7 @@ const Form = () => {
   };
 
   const forgotpassword = async (values, onSubmitProps) => {
-    const ForgotResponse = await fetch("https://backend-pi-project-2024-cipher-production.up.railway.app/auth/forgotpass", {
+    const ForgotResponse = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/auth/forgotpass", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

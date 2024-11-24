@@ -11,7 +11,7 @@ const PostsWidget = () => {
   useEffect(() => {
     const fetchUserGroups  = async () => {
       try {
-      const response = await fetch("https://backend-pi-project-2024-cipher-production.up.railway.app/groups/group", {
+      const response = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/groups/group", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });

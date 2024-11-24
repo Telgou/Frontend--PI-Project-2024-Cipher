@@ -12,7 +12,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const { ouruserid } = useSelector((state) => state.user);
 
   const getPosts = async () => {
-    const response = await fetch("https://backend-pi-project-2024-cipher-production.up.railway.app/posts", {
+    const response = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/posts", {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -22,7 +22,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getUserPosts = async () => {
     const response = await fetch(
-      `https://backend-pi-project-2024-cipher-production.up.railway.app/posts/${userId}`,
+      process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/posts/${userId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

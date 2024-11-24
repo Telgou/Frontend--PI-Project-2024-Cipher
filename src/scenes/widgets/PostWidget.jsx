@@ -52,7 +52,7 @@ const PostWidget = ({
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    const response = await fetch(`https://backend-pi-project-2024-cipher-production.up.railway.app/posts/${postId}/like`, {
+    const response = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ const PostWidget = ({
   const CommentSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`https://backend-pi-project-2024-cipher-production.up.railway.app/posts/${postId}/comments`, {
+      const response = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/posts/${postId}/comments`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -129,7 +129,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`https://backend-pi-project-2024-cipher-production.up.railway.app/assets/${picturePath}`}
+          src={process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">
@@ -137,10 +137,10 @@ const PostWidget = ({
           <FlexBetween gap="0.3rem">
             <IconButton onClick={patchLike}>
               {isLiked ? (
-                <img src={HeartFilled} alt="" className="cardIcon" />
+                <img src={"https://raw.githubusercontent.com/twbs/icons/main/icons/heart-fill.svg"} alt="" className="cardIcon" />
               ) : (
                 <img
-                  src={Heart}
+                  src={"https://raw.githubusercontent.com/twbs/icons/main/icons/heart.svg"}
                   alt=""
                   className="cardIcon"
                   onClick={() => handleNotification(1)}
@@ -192,7 +192,7 @@ const PostWidget = ({
                   width={'40rem'}
                   height={'40rem'}
                   alt="user"
-                  src={`https://backend-pi-project-2024-cipher-production.up.railway.app/assets/${comment.userpic}`}
+                  src={process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/assets/${comment.userpic}`}
                 ></img>
               </Box>
 

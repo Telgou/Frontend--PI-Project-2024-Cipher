@@ -51,7 +51,7 @@ const MyPostWidget = (isprofile) => {
       formData.append("picturePath", image.name);
     }
 
-    /*const response =*/ await fetch(`https://backend-pi-project-2024-cipher-production.up.railway.app/addpost`, {
+    /*const response =*/ await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app` + `/addpost`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -59,10 +59,10 @@ const MyPostWidget = (isprofile) => {
 
     const userid = new FormData();
     userid.append("userId", _id);
-    console.log(isProfile, isProfile==true)
-    const url = isProfile===true ? `https://backend-pi-project-2024-cipher-production.up.railway.app/posts/${_id}` : 'https://backend-pi-project-2024-cipher-production.up.railway.app/posts';
+    console.log(isProfile, isProfile == true)
+    const url = isProfile === true ? process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app` + `/posts/${_id}` : 'https://backend-pi-project-2024-cipher-production.up.railway.app/posts';
     const resposts = await fetch(url, {
-      method: "GET",  
+      method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     const posts = await resposts.json();
@@ -182,6 +182,14 @@ const MyPostWidget = (isprofile) => {
           POST
         </Button>
       </FlexBetween>
+
+      <FlexBetween mt="1rem">
+        <Typography>Post Title Here</Typography>
+        <IconButton onClick={() => handleDelete("examplePostId")}>
+          <DeleteOutlined sx={{ color: palette.error.main }} />
+        </IconButton>
+      </FlexBetween>
+
     </WidgetWrapper>
   );
 };

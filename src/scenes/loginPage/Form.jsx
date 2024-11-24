@@ -49,7 +49,7 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
-const socket = io('https://localhost:8082');
+//const socket = io('https://localhost:8082');
 const Form = () => {
   const { tok } = useParams();
   const [pageType, setPageType] = useState("login");
@@ -70,7 +70,7 @@ const Form = () => {
     formData.append("tok", tok.split('=')[1]);
 
     const savedUserResponse = await fetch(
-      "https://backend-pi-project-2024-cipher-production.up.railway.app/auth/register",
+      process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/auth/register",
       {
         method: "POST",
         body: formData,
@@ -116,7 +116,7 @@ const Form = () => {
       bodyValues.logtoken = token;
     }
 
-    const loggedInResponse = await fetch("https://backend-pi-project-2024-cipher-production.up.railway.app/auth/login", {
+    const loggedInResponse = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...values, logtoken: tok.split('=log')[1] }),
@@ -151,7 +151,7 @@ const Form = () => {
       navigate("/home");
 
       const userId = loggedIn.user._id;
-      socket.emit('login', userId);
+     // socket.emit('login', userId);
     } else {
       console.error("Login failed:", loggedIn.message);
     }

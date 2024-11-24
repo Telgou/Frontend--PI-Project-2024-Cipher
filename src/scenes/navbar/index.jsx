@@ -26,7 +26,7 @@ import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
-const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIconClick,socket}) => {
+const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIconClick, socket }) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,10 +40,10 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
 
   useEffect(() => {
     if (socket) {
-    socket.on("getNotification", (data) => {
-      setNotifications((prev) => [...prev, data]);
-    });
-  }
+      socket.on("getNotification", (data) => {
+        setNotifications((prev) => [...prev, data]);
+      });
+    }
   }, [socket]);
   const displayNotification = ({ senderName, type }) => {
     let action;
@@ -115,15 +115,15 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
           <div>
-            <IconButton onClick={handleActivityIconClick}>
+            <IconButton >
               <SportsSoccer />
             </IconButton>
 
-            <IconButton onClick={handleEventIconClick} >
+            <IconButton  >
               <Event />
             </IconButton>
 
-            <IconButton onClick={handleGroupIconClick}>
+            <IconButton >
               <Group />
             </IconButton>
 
@@ -135,26 +135,26 @@ const Navbar = ({ handleGroupIconClick, handleEventIconClick, handleActivityIcon
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <div onClick={handleChatRedirect}>
+          <div>
             <Message sx={{ fontSize: "25px" }} />
           </div>
           <div className="icons">
-        <div className="icon" onClick={() => setOpen(!open)}>
-          <img src={Notification} className="iconImg" alt="" />
-          {
-notifications.length >0 &&
-            <div className="counter">{notifications.length}</div>
-          }
-        </div>
-      </div>
-      {open && (
-        <div className="notifications">
-          {notifications.map((n) => displayNotification(n))}
-          <button className="nButton" onClick={handleRead}>
-            Mark as read
-          </button>
-        </div>
-         )}
+            <div className="icon" onClick={() => setOpen(!open)}>
+              <img src={Notification} className="iconImg" alt="" />
+              {
+                notifications.length > 0 &&
+                <div className="counter">{notifications.length}</div>
+              }
+            </div>
+          </div>
+          {open && (
+            <div className="notifications">
+              {notifications.map((n) => displayNotification(n))}
+              <button className="nButton" onClick={handleRead}>
+                Mark as read
+              </button>
+            </div>
+          )}
           <Help sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>
             <Select

@@ -54,7 +54,7 @@ import {
       }
      
   
-      const response = await fetch(`https://backend-pi-project-2024-cipher-production.up.railway.app/posts`, {
+      const response = await fetch(process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

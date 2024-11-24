@@ -1,4 +1,4 @@
-export const host = "https://backend-pi-project-2024-cipher-production.up.railway.app";
+export const host = process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"";
 export const loginRoute = `${host}/auth/login`;
 //export const registerRoute = `${host}/auth/register`;
 export const logoutRoute = `${host}/auth/logout`;

@@ -24,7 +24,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const patchFriend = async () => {
     const response = await fetch(
-      `https://backend-pi-project-2024-cipher-production.up.railway.app/users/${_id}/${friendId}`,
+      process.env.REACT_APP_API ? process.env.REACT_APP_API : `https://backend-pi-project-2024-cipher-production.up.railway.app`+`/users/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {

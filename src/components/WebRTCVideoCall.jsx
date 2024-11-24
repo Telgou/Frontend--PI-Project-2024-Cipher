@@ -88,10 +88,10 @@ const sendOffer = async () => {
     console.log("the local description",peerConnection.localDescription);
     console.log("peerConnection",peerConnection);
     // Send the SDP offer to the signaling server
-    socket.emit('offer', {
+   /* socket.emit('offer', {
       offer: peerConnection.localDescription,
       userId: _id,
-    });
+    });*/
     console.log("tba3thet el offer");
     console.log("2");
   } catch (error) {
@@ -100,17 +100,17 @@ const sendOffer = async () => {
 };
 
   // Set up Socket.IO connection to the signaling server
-  const socket = io('https://localhost:8082'); // Replace with your signaling server URL
+ // const socket = io('https://localhost:8082'); // Replace with your signaling server URL
 
 
 
-  socket.on('answer', (answer) => {
+/*  socket.on('answer', (answer) => {
     console.log("11");
     console.log('Received answer raj3et marra okhra:', answer);
     peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
     console.log("the peerconnection of the first user :" ,peerConnection);
     console.log("12");
-  });
+  });*/
 
 const checkConnectionState = (peerConnection) => {
   console.log("connection state",peerConnection.connectionState );
@@ -144,16 +144,16 @@ const handleCallAcceptance = async (offerData) => {
     console.log("checking the peerConnection to check the onTrack",peerConnection2);
     console.log("checking localdescription of peerConnection2", peerConnection2.localDescription)
     // Send the SDP answer back to the initiator user
-    socket.emit('answer', {
+ /*   socket.emit('answer', {
       answer: peerConnection2.localDescription,
       originateUserIdsocketid: originateUserIdsocketid,
-    });
+    });*/
     console.log("8");
   } catch (error) {
     console.error('Error generating or sending SDP answer of the call acceptance:', error);
   }
 };
-
+/*
 socket.on('offer', async (data) => {
   console.log("3");
   console.log('Received offer:', data); 
@@ -173,7 +173,7 @@ socket.on('offer', async (data) => {
   } catch (error) {
       console.error('Error generating or sending SDP answer:', error);
   }
-});
+});*/
 
 
 

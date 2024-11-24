@@ -42,7 +42,7 @@ const PassresetForm = () => {
     };
 
     const ResetResponse = await fetch(
-      "https://backend-pi-project-2024-cipher-production.up.railway.app/auth/resetpass",
+      process.env.REACT_APP_API ? process.env.REACT_APP_API : "https://backend-pi-project-2024-cipher-production.up.railway.app"+"/auth/resetpass",
       {
         method: "POST",
         headers: {
