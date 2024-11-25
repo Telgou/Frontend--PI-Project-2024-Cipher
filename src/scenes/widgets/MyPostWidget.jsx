@@ -72,12 +72,7 @@ const MyPostWidget = (isprofile) => {
     setImage(null);
     setPost("");
   };
-  const handleDelete = async (postId) => {
-    await fetch(`${process.env.REACT_APP_API || "https://backend-pi-project-2024-cipher-production.up.railway.app"}/posts/${postId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  }
+
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">
@@ -188,12 +183,6 @@ const MyPostWidget = (isprofile) => {
         </Button>
       </FlexBetween>
 
-      <FlexBetween mt="1rem">
-        <Typography>Post Title Here</Typography>
-        <IconButton onClick={() => handleDelete("examplePostId")}>
-          <DeleteOutlined sx={{ color: palette.error.main }} />
-        </IconButton>
-      </FlexBetween>
 
     </WidgetWrapper>
   );
